@@ -1,0 +1,10 @@
+<resources>
+
+    <string name="app_name">Baking App</string>
+    <string name="show">Show</string>
+    <string name="ingredients">Ingredients</string>
+    <string name="loading_recipes">Recipes Loaded</string>
+    <string name="sorry">Sorry, no recipes!</string>
+    <string name="no_internet">Sorry, no internet connection!</string>
+
+</resources>

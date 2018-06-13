@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/circle_dot"
+        android:layout_marginStart="@dimen/margin"
+        android:src="@drawable/lens"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/show"/>
+
+    <TextView
+        android:id="@+id/each_step_tv"
+        android:text="@string/ingredients"
+        android:textStyle="bold"
+        android:layout_centerInParent="true"
+        android:layout_toEndOf="@id/circle_dot"
+        android:layout_marginStart="@dimen/margin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:ignore="RelativeOverlap" />
+
+    <ImageView
+        android:id="@+id/click_image"
+        android:src="@drawable/arrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="@dimen/margin"
+        android:contentDescription="@string/show"/>
+
+</RelativeLayout>
