@@ -101,7 +101,7 @@
       }
     ],
     "servings": 8,
-    "image": "https://commons.wikimedia.org/wiki/Cake#/media/File:Chocolate_Cake_Flourless_(1).jpg"
+    "image": "https://upload.wikimedia.org/wikipedia/commons/8/84/Chocolate_Cake_Flourless_%281%29.jpg"
   },
   {
     "id": 2,
@@ -231,7 +231,7 @@
       }
     ],
     "servings": 8,
-    "image": "https://en.wikipedia.org/wiki/Cupcake#/media/File:Cakeincupcakes.jpg"
+    "image": "https://upload.wikimedia.org/wikipedia/commons/2/25/Brownie_Neum%C3%BCller_Ferdinand_cropped.jpg"
   },
   {
     "id": 3,
@@ -382,7 +382,7 @@
       }
     ],
     "servings": 8,
-    "image": "https://en.wikipedia.org/wiki/Cake#/media/File:Pound_layer_cake.jpg"
+    "image": "https://upload.wikimedia.org/wikipedia/commons/7/70/Slice_of_pound_cake.jpg"
   },
   {
     "id": 4,
@@ -528,6 +528,6 @@
       }
     ],
     "servings": 8,
-    "image": "https://en.wikipedia.org/wiki/Cheesecake#/media/File:Making_cheese_cake.jpg"
+    "image": "https://upload.wikimedia.org/wikipedia/commons/a/a5/Making_cheese_cake.jpg"
   }
 ]

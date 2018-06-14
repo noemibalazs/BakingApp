@@ -2,22 +2,28 @@ package com.example.android.bakingapp;
 
 import android.app.LoaderManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.Loader;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.support.v4.app.NavUtils;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.android.bakingapp.model.Ingredients;
 import com.example.android.bakingapp.model.Recipe;
+import com.example.android.bakingapp.model.Steps;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.MissingResourceException;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Recipe>>{
 
@@ -33,16 +39,16 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mProgressBar = findViewById(R.id.progress_bar);
+
         mRecycle = findViewById(R.id.cake_recycle_view);
-        LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        final LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
 
         mRecycle.setLayoutManager(manager);
         mRecycle.setHasFixedSize(true);
 
         mAdapter = new ImageAdapter(this);
         mRecycle.setAdapter(mAdapter);
-
-        mProgressBar = findViewById(R.id.progress_bar);
 
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
@@ -92,4 +98,5 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         }
         return false;
     }
+
 }

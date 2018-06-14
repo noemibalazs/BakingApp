@@ -6,5 +6,6 @@
     <string name="loading_recipes">Recipes Loaded</string>
     <string name="sorry">Sorry, no recipes!</string>
     <string name="no_internet">Sorry, no internet connection!</string>
+    <string name="sorry_no_ingredients">Sorry, no ingredients!</string>
 
 </resources>
