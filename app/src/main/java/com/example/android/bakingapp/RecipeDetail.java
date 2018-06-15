@@ -5,10 +5,8 @@ import android.content.Intent;
 import android.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.widget.TabHost;
 import android.widget.Toast;
 
 import com.example.android.bakingapp.model.Ingredients;
@@ -35,7 +33,7 @@ public class RecipeDetail extends AppCompatActivity implements LoaderManager.Loa
         String name = intent.getStringExtra("Name");
         getSupportActionBar().setTitle(name);
 
-        int id = intent.getIntExtra("Id", 0);
+        final int id = intent.getIntExtra("Id", 0);
 
         final List<Ingredients> ingredients =  intent.getParcelableArrayListExtra("In");
         final List<Steps> steps = intent.getParcelableArrayListExtra("St");

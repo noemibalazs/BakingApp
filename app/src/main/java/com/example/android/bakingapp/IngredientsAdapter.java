@@ -18,11 +18,11 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
     private List<Ingredients> mIngredients;
 
 
+
     public IngredientsAdapter(Context context, List<Ingredients> ingredients){
         mContext = context;
         mIngredients = ingredients;
     }
-
 
     @NonNull
     @Override
