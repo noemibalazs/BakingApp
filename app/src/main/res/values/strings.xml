@@ -7,5 +7,6 @@
     <string name="sorry">Sorry, no recipes!</string>
     <string name="no_internet">Sorry, no internet connection!</string>
     <string name="sorry_no_ingredients">Sorry, no ingredients!</string>
+    <string name="sorry_no_steps">Sorry, no steps!</string>
 
 </resources>
