@@ -36,15 +36,19 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.StepsViewHol
     public void onBindViewHolder(@NonNull StepsViewHolder holder, int position) {
         Steps steps = mSteps.get(position);
         String shortDescription = steps.getShortDescription();
-        String description = steps.getRecipeDescription();
-        String thumbnail = steps.getThumbnailUrl();
-        String video = steps.getVideoUrl();
-        int stepsId = steps.getIdSteps();
+        final String description = steps.getRecipeDescription();
+        final String thumbnail = steps.getThumbnailUrl();
+        final String video = steps.getVideoUrl();
+        final int stepsId = steps.getIdSteps();
         holder.mDescription.setText(shortDescription);
         holder.mArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, ExoActivity.class);
+                intent.putExtra("Description", description);
+                intent.putExtra("Thumbnail", thumbnail);
+                intent.putExtra("Video", video);
+                intent.putExtra("Id", stepsId);
                 mContext.startActivity(intent);
             }
         });

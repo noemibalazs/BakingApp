@@ -19,6 +19,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".RecipeDetail"
             android:parentActivityName=".MainActivity">
@@ -26,7 +27,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.android.bakingapp.MainActivity" />
         </activity>
-        <activity android:name=".ExoActivity"></activity>
+
+        <activity android:name=".ExoActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"/>
     </application>
 
 </manifest>

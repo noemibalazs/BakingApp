@@ -49,12 +49,12 @@ public class IngredientsUtil {
 
             JSONArray array = new JSONArray(json);
 
-            for (int i=0; i< array.length(); i++){
+            for (int i=0; i< array.length();i++){
 
                 JSONObject object = array.getJSONObject(i);
 
                 JSONArray ingredientsArray = object.getJSONArray(INGREDIENTS);
-                for (int j =0; j<ingredientsArray.length(); j++){
+                for (int j =0; j<ingredientsArray.length();j++){
                     JSONObject detail = ingredientsArray.getJSONObject(j);
 
                     quantity = detail.getString(QUANTITY);
@@ -65,6 +65,7 @@ public class IngredientsUtil {
                     ingredients.add(ing);
                 }
             }
+
 
         } catch (JSONException e) {
             e.printStackTrace();
