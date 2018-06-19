@@ -24,7 +24,6 @@ public class IngredientsUtil {
 
     public static List<Ingredients> getAllIngredients(Context context){
 
-        List<Ingredients> ingredients = new ArrayList<>();
         String json = null;
 
         String quantity = "";
@@ -52,6 +51,7 @@ public class IngredientsUtil {
             for (int i=0; i< array.length();i++){
 
                 JSONObject object = array.getJSONObject(i);
+                List<Ingredients> ingredients = new ArrayList<>();
 
                 JSONArray ingredientsArray = object.getJSONArray(INGREDIENTS);
                 for (int j =0; j<ingredientsArray.length();j++){
@@ -71,7 +71,7 @@ public class IngredientsUtil {
             e.printStackTrace();
         }
 
-        return ingredients;
+        return getAllIngredients(context);
 
     }
 }

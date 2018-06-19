@@ -34,11 +34,10 @@ public class RecipeUtil {
     private static final String THUMBNAIL = "thumbnailURL";
     private static final String IMAGE = "image";
 
+
     public static List<Recipe> getAllDetail(Context context){
 
         List<Recipe> recipes = new ArrayList<>();
-        List<Ingredients> listIngredients = new ArrayList<>();
-        List<Steps> listSteps = new ArrayList<>();
         String json = null;
 
         int idRecipe;
@@ -74,6 +73,9 @@ public class RecipeUtil {
 
             for (int i=0; i< array.length(); i++){
 
+                List<Ingredients> ingredientsList = new ArrayList<>();
+                List<Steps> stepsList = new ArrayList<>();
+
                 JSONObject object = array.getJSONObject(i);
 
                 idRecipe = object.getInt(ID);
@@ -81,6 +83,7 @@ public class RecipeUtil {
                 image = object.optString(IMAGE);
 
                 JSONArray ingredients = object.getJSONArray(INGREDIENTS);
+
                 for (int j =0; j<ingredients.length(); j++){
 
                     JSONObject ingredObject = ingredients.getJSONObject(j);
@@ -89,8 +92,8 @@ public class RecipeUtil {
                     measure = ingredObject.getString(MEASURE);
                     ingred = ingredObject.getString(INGRED);
 
-                    Ingredients ing = new Ingredients(quantity, measure, ingred);
-                    listIngredients.add(ing);
+                    Ingredients hozz = new Ingredients(quantity, measure, ingred);
+                    ingredientsList.add(hozz);
                 }
 
                 JSONArray steps = object.getJSONArray(STEPS);
@@ -104,10 +107,11 @@ public class RecipeUtil {
                     thumbnail = stepsObject.getString(THUMBNAIL);
 
                     Steps st = new Steps(idSteps, shortDescription, description, video, thumbnail);
-                    listSteps.add(st);
+                    stepsList.add(st);
                 }
 
-                Recipe rec = new Recipe(idRecipe, name, listIngredients, listSteps, image);
+
+                Recipe rec = new Recipe(idRecipe, name,  ingredientsList, stepsList, image);
                 recipes.add(rec);
             }
 

@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mAdapter = new ImageAdapter(this);
         mRecycle.setAdapter(mAdapter);
 
+
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         if (networkInfo !=null && networkInfo.isConnected()){

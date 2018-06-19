@@ -27,7 +27,6 @@ public class StepsUtil {
 
     public static List<Steps> getAllSteps(Context context){
 
-        List<Steps> listSteps = new ArrayList<>();
         String json = null;
 
         int idSteps;
@@ -57,6 +56,7 @@ public class StepsUtil {
 
             for (int i=0; i<array.length(); i++){
                 JSONObject object = array.getJSONObject(i);
+                List<Steps> listSteps = new ArrayList<>();
 
                 JSONArray steps = object.getJSONArray(STEPS);
                 for (int k =0; k < steps.length(); k++){
@@ -76,7 +76,7 @@ public class StepsUtil {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return listSteps;
+        return getAllSteps(context);
 
     }
 }

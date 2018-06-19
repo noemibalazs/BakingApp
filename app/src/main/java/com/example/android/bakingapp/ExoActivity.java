@@ -34,6 +34,7 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
 
+
 public class ExoActivity extends AppCompatActivity implements ExoPlayer.EventListener {
 
     private SimpleExoPlayerView mPlayerView;
@@ -98,9 +99,7 @@ public class ExoActivity extends AppCompatActivity implements ExoPlayer.EventLis
             this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                     |View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE) ;
 
-        }
-
-        else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
             mCard.setVisibility(View.VISIBLE);
             mButton.setVisibility(View.VISIBLE);
             mParams = (RelativeLayout.LayoutParams) mPlayerView.getLayoutParams();
@@ -108,16 +107,14 @@ public class ExoActivity extends AppCompatActivity implements ExoPlayer.EventLis
             mParams.height = 210;
             mPlayerView.setLayoutParams(mParams);
 
-            if (getSupportActionBar()!=null){
+            if (getSupportActionBar()!= null){
                 getSupportActionBar().show();
             }
 
-            this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
-                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-
+            this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN );
         }
+        
     }
-
 
     private void initializeMediaSession(){
 
@@ -158,6 +155,7 @@ public class ExoActivity extends AppCompatActivity implements ExoPlayer.EventLis
 
         }
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
