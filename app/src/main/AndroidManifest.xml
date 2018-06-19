@@ -28,9 +28,7 @@
                 android:value=".MainActivity"/>
         </activity>
 
-        <activity android:name=".ExoActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"/>
-
+        <activity android:name=".ExoActivity"/>
     </application>
 
 </manifest>

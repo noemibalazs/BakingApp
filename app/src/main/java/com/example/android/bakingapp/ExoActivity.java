@@ -11,7 +11,6 @@ import android.support.v7.widget.CardView;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -33,9 +32,6 @@ import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
-
-import static android.view.View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
-
 
 public class ExoActivity extends AppCompatActivity implements ExoPlayer.EventListener {
 
@@ -82,13 +78,12 @@ public class ExoActivity extends AppCompatActivity implements ExoPlayer.EventLis
             initializePlayer(Uri.parse(video));
         }
 
+        resizePlayer(getResources().getConfiguration().orientation);
+
     }
 
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-
-        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE){
+    private void resizePlayer(int orientation){
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE){
             mCard.setVisibility(View.GONE);
             mButton.setVisibility(View.GONE);
             mParams = (RelativeLayout.LayoutParams) mPlayerView.getLayoutParams();
@@ -101,22 +96,25 @@ public class ExoActivity extends AppCompatActivity implements ExoPlayer.EventLis
             }
             this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                     |View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE) ;
+        }
 
-        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+        else if (orientation == Configuration.ORIENTATION_PORTRAIT){
             mCard.setVisibility(View.VISIBLE);
             mButton.setVisibility(View.VISIBLE);
             mParams = (RelativeLayout.LayoutParams) mPlayerView.getLayoutParams();
             mParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
-            mParams.height = 210;
+            float f = mPlayerView.getResources().getDisplayMetrics().density;
+            mParams.height = (int)(mPlayerView.getHeight() * f);
             mPlayerView.setLayoutParams(mParams);
 
             if (getSupportActionBar()!= null){
                 getSupportActionBar().show();
             }
 
-            this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN );
+            this.getWindow().getDecorView().setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+            );
         }
-
     }
 
 
