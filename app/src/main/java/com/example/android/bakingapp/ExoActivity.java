@@ -11,6 +11,7 @@ import android.support.v7.widget.CardView;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -33,6 +34,7 @@ import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
+import static android.view.View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
 
 
 public class ExoActivity extends AppCompatActivity implements ExoPlayer.EventListener {
@@ -48,6 +50,7 @@ public class ExoActivity extends AppCompatActivity implements ExoPlayer.EventLis
     private CardView mButton;
 
     private static final String TAG = ExoActivity.class.getSimpleName();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,8 +116,9 @@ public class ExoActivity extends AppCompatActivity implements ExoPlayer.EventLis
 
             this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN );
         }
-        
+
     }
+
 
     private void initializeMediaSession(){
 
@@ -217,6 +221,8 @@ public class ExoActivity extends AppCompatActivity implements ExoPlayer.EventLis
     public void onPositionDiscontinuity() {
 
     }
+
+
 
     private class MySessionCallback extends MediaSessionCompat.Callback{
 
