@@ -11,10 +11,12 @@ import android.support.v7.widget.CardView;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
+import com.example.android.bakingapp.model.Steps;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
@@ -33,6 +35,8 @@ import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
+import java.util.List;
+
 public class ExoActivity extends AppCompatActivity implements ExoPlayer.EventListener {
 
     private SimpleExoPlayerView mPlayerView;
@@ -44,9 +48,18 @@ public class ExoActivity extends AppCompatActivity implements ExoPlayer.EventLis
     private RelativeLayout.LayoutParams mParams;
     private CardView mCard;
     private CardView mButton;
+    private ImageView mLeft;
+    private ImageView mRight;
+
+    private List<Steps> mStepsList;
+    private Steps mSteps;
+    private int position;
+
+    private String mDescription;
+    private String mVideo;
+    private String mThumb;
 
     private static final String TAG = ExoActivity.class.getSimpleName();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,10 +70,12 @@ public class ExoActivity extends AppCompatActivity implements ExoPlayer.EventLis
 
         Intent intent = getIntent();
         String description = intent.getStringExtra("Description");
+        mText.setText(description);
+
         String thumbnail = intent.getStringExtra("Thumbnail");
         String video = intent.getStringExtra("Video");
-
         int id = intent.getIntExtra("Id", 0);
+        position = id;
 
         mPlayerView = findViewById(R.id.player_view);
         mText = findViewById(R.id.recipe_description_media);
@@ -68,7 +83,29 @@ public class ExoActivity extends AppCompatActivity implements ExoPlayer.EventLis
         mCard = findViewById(R.id.cv_recipe_description);
         mButton = findViewById(R.id.cv_button);
 
-        mText.setText(description);
+        mLeft = findViewById(R.id.left_click_image);
+        mRight = findViewById(R.id.right_click_image);
+
+        mRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               position++;
+                mSteps = mStepsList.get(position);
+                if (position <= mStepsList.size() ){
+                    mRight.setEnabled(true);
+                    next(mSteps);
+                }
+
+            }
+        });
+
+        mLeft.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
 
         initializeMediaSession();
 
@@ -79,7 +116,18 @@ public class ExoActivity extends AppCompatActivity implements ExoPlayer.EventLis
         }
 
         resizePlayer(getResources().getConfiguration().orientation);
+    }
 
+    private void next(Steps next){
+        mVideo = next.getVideoUrl();
+        mThumb = next.getThumbnailUrl();
+        mDescription = next.getRecipeDescription();
+        mText.setText(mDescription);
+        if (mThumb!=null){
+            initializePlayer(Uri.parse(mThumb));
+        } else {
+            initializePlayer(Uri.parse(mVideo));
+        }
     }
 
     private void resizePlayer(int orientation){
@@ -104,7 +152,7 @@ public class ExoActivity extends AppCompatActivity implements ExoPlayer.EventLis
             mParams = (RelativeLayout.LayoutParams) mPlayerView.getLayoutParams();
             mParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
             float f = mPlayerView.getResources().getDisplayMetrics().density;
-            mParams.height = (int)(mPlayerView.getHeight() * f);
+            mParams.height = (int)(210 * f);
             mPlayerView.setLayoutParams(mParams);
 
             if (getSupportActionBar()!= null){
