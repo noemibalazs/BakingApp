@@ -53,7 +53,6 @@ public class ExoActivity extends AppCompatActivity implements ExoPlayer.EventLis
 
     private List<Steps> mStepsList;
     private Steps mSteps;
-    private int position;
 
     private String mDescription;
     private String mVideo;
@@ -68,17 +67,14 @@ public class ExoActivity extends AppCompatActivity implements ExoPlayer.EventLis
 
         this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
         String description = intent.getStringExtra("Description");
-        mText.setText(description);
-
-        String thumbnail = intent.getStringExtra("Thumbnail");
-        String video = intent.getStringExtra("Video");
-        int id = intent.getIntExtra("Id", 0);
-        position = id;
+        final String thumbnail = intent.getStringExtra("Thumbnail");
+        final String video = intent.getStringExtra("Video");
 
         mPlayerView = findViewById(R.id.player_view);
         mText = findViewById(R.id.recipe_description_media);
+        mText.setText(description);
 
         mCard = findViewById(R.id.cv_recipe_description);
         mButton = findViewById(R.id.cv_button);
@@ -89,9 +85,10 @@ public class ExoActivity extends AppCompatActivity implements ExoPlayer.EventLis
         mRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               position++;
-                mSteps = mStepsList.get(position);
-                if (position <= mStepsList.size() ){
+                int id = intent.getIntExtra("Id", 0);
+                id++;
+                mSteps = mStepsList.get(id);
+                if (id <= mStepsList.size() ){
                     mRight.setEnabled(true);
                     next(mSteps);
                 }
@@ -119,6 +116,7 @@ public class ExoActivity extends AppCompatActivity implements ExoPlayer.EventLis
     }
 
     private void next(Steps next){
+
         mVideo = next.getVideoUrl();
         mThumb = next.getThumbnailUrl();
         mDescription = next.getRecipeDescription();
