@@ -8,13 +8,13 @@ import android.support.v4.media.session.PlaybackStateCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 
 import com.example.android.bakingapp.model.Steps;
 import com.google.android.exoplayer2.DefaultLoadControl;
@@ -35,6 +35,8 @@ import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
+import java.util.ArrayList;
+import java.util.EventListener;
 import java.util.List;
 
 public class ExoActivity extends AppCompatActivity implements ExoPlayer.EventListener {
@@ -51,8 +53,8 @@ public class ExoActivity extends AppCompatActivity implements ExoPlayer.EventLis
     private ImageView mLeft;
     private ImageView mRight;
 
-    private List<Steps> mStepsList;
     private Steps mSteps;
+    private int position;
 
     private String mDescription;
     private String mVideo;
@@ -71,6 +73,8 @@ public class ExoActivity extends AppCompatActivity implements ExoPlayer.EventLis
         String description = intent.getStringExtra("Description");
         final String thumbnail = intent.getStringExtra("Thumbnail");
         final String video = intent.getStringExtra("Video");
+        final List <Steps> step = intent.getParcelableArrayListExtra("List");
+        position = intent.getIntExtra("Id", 0);
 
         mPlayerView = findViewById(R.id.player_view);
         mText = findViewById(R.id.recipe_description_media);
@@ -85,20 +89,44 @@ public class ExoActivity extends AppCompatActivity implements ExoPlayer.EventLis
         mRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int id = intent.getIntExtra("Id", 0);
-                id++;
-                mSteps = mStepsList.get(id);
-                if (id <= mStepsList.size() ){
+                position++;
+                if (position >= 0 && position < step.size()){
+                    mSteps = step.get(position);
                     mRight.setEnabled(true);
-                    next(mSteps);
-                }
+                    mVideo = mSteps.getVideoUrl();
+                    Log.v(TAG, "hhhhhhhhhhhhhhhhhh " + mVideo);
+                    mThumb = mSteps.getThumbnailUrl();
+                    Log.v(TAG, "HHHHHHHHHHHHHHHHHHHH " + mThumb);
+                    mDescription = mSteps.getRecipeDescription();
+                    mText.setText(mDescription);
+                    if (!mThumb.isEmpty()){
+                        initializePlayer(Uri.parse(mThumb));
+                    } else if (!mVideo.isEmpty()){
+                        initializePlayer(Uri.parse(mVideo));
+                    }
 
+                }
             }
         });
 
         mLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                position--;
+               if (position > 0 && position <= step.size()){
+                   mSteps = step.get(position);
+                   mLeft.setEnabled(true);
+                   mVideo = mSteps.getVideoUrl();
+                   mThumb = mSteps.getThumbnailUrl();
+                   mDescription = mSteps.getRecipeDescription();
+                   mText.setText(mDescription);
+                   if (!mVideo.isEmpty()){
+                       initializePlayer(Uri.parse(mVideo));
+                   } else if (!mThumb.isEmpty()){
+                       initializePlayer(Uri.parse(mThumb));
+                   }
+
+               }
 
             }
         });
@@ -108,25 +136,13 @@ public class ExoActivity extends AppCompatActivity implements ExoPlayer.EventLis
 
         if (!thumbnail.isEmpty()){
             initializePlayer(Uri.parse(thumbnail));
-        } else {
+        } else if(!video.isEmpty()){
             initializePlayer(Uri.parse(video));
         }
 
         resizePlayer(getResources().getConfiguration().orientation);
     }
 
-    private void next(Steps next){
-
-        mVideo = next.getVideoUrl();
-        mThumb = next.getThumbnailUrl();
-        mDescription = next.getRecipeDescription();
-        mText.setText(mDescription);
-        if (mThumb!=null){
-            initializePlayer(Uri.parse(mThumb));
-        } else {
-            initializePlayer(Uri.parse(mVideo));
-        }
-    }
 
     private void resizePlayer(int orientation){
         if (orientation == Configuration.ORIENTATION_LANDSCAPE){
@@ -192,6 +208,7 @@ public class ExoActivity extends AppCompatActivity implements ExoPlayer.EventLis
             LoadControl control = new DefaultLoadControl();
             mExoPlayer = ExoPlayerFactory.newSimpleInstance(this, selector, control);
             mPlayerView.setPlayer(mExoPlayer);
+            mPlayerView.requestFocus();
 
             mExoPlayer.addListener(this);
 
@@ -202,17 +219,6 @@ public class ExoActivity extends AppCompatActivity implements ExoPlayer.EventLis
             mExoPlayer.setPlayWhenReady(true);
 
         }
-    }
-
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int idMenu = item.getItemId();
-        if (idMenu == android.R.id.home){
-            onBackPressed();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -227,6 +233,15 @@ public class ExoActivity extends AppCompatActivity implements ExoPlayer.EventLis
         mExoPlayer.stop();
         mExoPlayer.release();
         mExoPlayer=null;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home){
+            onBackPressed();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
