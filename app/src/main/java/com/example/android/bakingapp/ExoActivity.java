@@ -89,8 +89,9 @@ public class ExoActivity extends AppCompatActivity implements ExoPlayer.EventLis
         mRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                position++;
-                if (position >= 0 && position < step.size()){
+                if (position >= 0 && position < step.size() -1){
+                    position++;
+                    if (mExoPlayer!=null)releasePlayer();
                     mSteps = step.get(position);
                     mRight.setEnabled(true);
                     mVideo = mSteps.getVideoUrl();
@@ -112,12 +113,16 @@ public class ExoActivity extends AppCompatActivity implements ExoPlayer.EventLis
         mLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                position--;
                if (position > 0 && position <= step.size()){
+                   position--;
+                   if (mExoPlayer!=null)
+                       releasePlayer();
                    mSteps = step.get(position);
                    mLeft.setEnabled(true);
                    mVideo = mSteps.getVideoUrl();
+                   Log.v(TAG, "hhhhhhhhhhhhhhhhhh " + mVideo);
                    mThumb = mSteps.getThumbnailUrl();
+                   Log.v(TAG, "HHHHHHHHHHHHHHHHHHHH " + mThumb);
                    mDescription = mSteps.getRecipeDescription();
                    mText.setText(mDescription);
                    if (!mVideo.isEmpty()){
@@ -125,7 +130,6 @@ public class ExoActivity extends AppCompatActivity implements ExoPlayer.EventLis
                    } else if (!mThumb.isEmpty()){
                        initializePlayer(Uri.parse(mThumb));
                    }
-
                }
 
             }
@@ -141,6 +145,7 @@ public class ExoActivity extends AppCompatActivity implements ExoPlayer.EventLis
         }
 
         resizePlayer(getResources().getConfiguration().orientation);
+
     }
 
 
