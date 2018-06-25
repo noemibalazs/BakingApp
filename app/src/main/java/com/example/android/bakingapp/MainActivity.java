@@ -2,28 +2,23 @@ package com.example.android.bakingapp;
 
 import android.app.LoaderManager;
 import android.content.Context;
-import android.content.Intent;
 import android.content.Loader;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.example.android.bakingapp.model.Ingredients;
 import com.example.android.bakingapp.model.Recipe;
-import com.example.android.bakingapp.model.Steps;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.MissingResourceException;
+
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Recipe>>{
 
@@ -42,9 +37,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mProgressBar = findViewById(R.id.progress_bar);
 
         mRecycle = findViewById(R.id.cake_recycle_view);
-        final LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
 
-        mRecycle.setLayoutManager(manager);
+        final int columns = getResources().getInteger(R.integer.gallery_columns);
+        mRecycle.setLayoutManager(new GridLayoutManager(this, columns));
         mRecycle.setHasFixedSize(true);
 
         mAdapter = new ImageAdapter(this);

@@ -87,53 +87,53 @@ public class ExoActivity extends AppCompatActivity implements ExoPlayer.EventLis
         mRight = findViewById(R.id.right_click_image);
 
         mRight.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (position >= 0 && position < step.size() -1){
-                    position++;
-                    if (mExoPlayer!=null)releasePlayer();
-                    mSteps = step.get(position);
-                    mRight.setEnabled(true);
-                    mVideo = mSteps.getVideoUrl();
-                    Log.v(TAG, "hhhhhhhhhhhhhhhhhh " + mVideo);
-                    mThumb = mSteps.getThumbnailUrl();
-                    Log.v(TAG, "HHHHHHHHHHHHHHHHHHHH " + mThumb);
-                    mDescription = mSteps.getRecipeDescription();
-                    mText.setText(mDescription);
-                    if (!mThumb.isEmpty()){
-                        initializePlayer(Uri.parse(mThumb));
-                    } else if (!mVideo.isEmpty()){
-                        initializePlayer(Uri.parse(mVideo));
+                @Override
+                public void onClick(View v) {
+                    if (position >= 0 && position < step.size() - 1) {
+                        position++;
+                        if (mExoPlayer != null) releasePlayer();
+                        mSteps = step.get(position);
+                        mRight.setEnabled(true);
+                        mVideo = mSteps.getVideoUrl();
+                        Log.v(TAG, "hhhhhhhhhhhhhhhhhh " + mVideo);
+                        mThumb = mSteps.getThumbnailUrl();
+                        Log.v(TAG, "HHHHHHHHHHHHHHHHHHHH " + mThumb);
+                        mDescription = mSteps.getRecipeDescription();
+                        mText.setText(mDescription);
+                        if (!mThumb.isEmpty()) {
+                            initializePlayer(Uri.parse(mThumb));
+                        } else if (!mVideo.isEmpty()) {
+                            initializePlayer(Uri.parse(mVideo));
+                        }
+
+                    }
+                }
+            });
+
+        mLeft.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (position > 0 && position <= step.size()) {
+                        position--;
+                        if (mExoPlayer != null)
+                            releasePlayer();
+                        mSteps = step.get(position);
+                        mLeft.setEnabled(true);
+                        mVideo = mSteps.getVideoUrl();
+                        Log.v(TAG, "hhhhhhhhhhhhhhhhhh " + mVideo);
+                        mThumb = mSteps.getThumbnailUrl();
+                        Log.v(TAG, "HHHHHHHHHHHHHHHHHHHH " + mThumb);
+                        mDescription = mSteps.getRecipeDescription();
+                        mText.setText(mDescription);
+                        if (!mVideo.isEmpty()) {
+                            initializePlayer(Uri.parse(mVideo));
+                        } else if (!mThumb.isEmpty()) {
+                            initializePlayer(Uri.parse(mThumb));
+                        }
                     }
 
                 }
-            }
-        });
-
-        mLeft.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               if (position > 0 && position <= step.size()){
-                   position--;
-                   if (mExoPlayer!=null)
-                       releasePlayer();
-                   mSteps = step.get(position);
-                   mLeft.setEnabled(true);
-                   mVideo = mSteps.getVideoUrl();
-                   Log.v(TAG, "hhhhhhhhhhhhhhhhhh " + mVideo);
-                   mThumb = mSteps.getThumbnailUrl();
-                   Log.v(TAG, "HHHHHHHHHHHHHHHHHHHH " + mThumb);
-                   mDescription = mSteps.getRecipeDescription();
-                   mText.setText(mDescription);
-                   if (!mVideo.isEmpty()){
-                       initializePlayer(Uri.parse(mVideo));
-                   } else if (!mThumb.isEmpty()){
-                       initializePlayer(Uri.parse(mThumb));
-                   }
-               }
-
-            }
-        });
+            });
 
 
         initializeMediaSession();
@@ -145,9 +145,7 @@ public class ExoActivity extends AppCompatActivity implements ExoPlayer.EventLis
         }
 
         resizePlayer(getResources().getConfiguration().orientation);
-
     }
-
 
     private void resizePlayer(int orientation){
         if (orientation == Configuration.ORIENTATION_LANDSCAPE){
