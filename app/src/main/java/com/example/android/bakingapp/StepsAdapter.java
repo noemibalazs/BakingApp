@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -49,12 +50,18 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.StepsViewHol
         holder.mArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                Bundle bundle = new Bundle();
+                bundle.putString("Description", description);
+                bundle.putString("Thumbnail", thumbnail);
+                bundle.putString("Video", video);
+                bundle.putInt("Id", stepsId);
+                bundle.putParcelableArrayList("List", (ArrayList<? extends Parcelable>) mSteps);
+
+                ExoActivityFragment fragment = new ExoActivityFragment();
+                fragment.setArguments(bundle);
+
                 Intent intent = new Intent(mContext, ExoActivity.class);
-                intent.putExtra("Description", description);
-                intent.putExtra("Thumbnail", thumbnail);
-                intent.putExtra("Video", video);
-                intent.putExtra("Id", stepsId);
-                intent.putParcelableArrayListExtra("List", (ArrayList<? extends Parcelable>) mSteps);
                 mContext.startActivity(intent);
             }
         });

@@ -35,7 +35,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         setContentView(R.layout.activity_main);
 
         mProgressBar = findViewById(R.id.progress_bar);
-
         mRecycle = findViewById(R.id.cake_recycle_view);
 
         final int columns = getResources().getInteger(R.integer.gallery_columns);

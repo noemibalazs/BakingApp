@@ -2,6 +2,7 @@ package com.example.android.bakingapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -49,14 +50,19 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
                     .error(R.drawable.cake)
                     .placeholder(R.drawable.cake)
                     .into(holder.cake);
+
             holder.cake.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelableArrayList("In", (ArrayList<? extends Parcelable>) ingredients);
+                    bundle.putParcelableArrayList("St", (ArrayList<? extends Parcelable>) steps);
+
+                    RecipeDetailFragment fragment = new RecipeDetailFragment();
+                    fragment.setArguments(bundle);
+
                     Intent intent = new Intent(mContext, RecipeDetail.class);
                     intent.putExtra("Name", name);
-                    intent.putExtra("Id", id);
-                    intent.putParcelableArrayListExtra("In", (ArrayList<? extends Parcelable>) ingredients);
-                    intent.putParcelableArrayListExtra("St", (ArrayList<? extends Parcelable>) steps);
                     mContext.startActivity(intent);
                 }
             });

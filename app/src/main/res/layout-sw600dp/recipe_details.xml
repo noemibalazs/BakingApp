@@ -1,106 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:baselineAligned="false"
     tools:context=".RecipeDetail">
 
-    <android.support.v4.widget.NestedScrollView
-        android:id="@+id/nscw"
+    <fragment
         android:layout_width="300dp"
-        android:layout_height="match_parent">
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <LinearLayout
-                android:background="@color/colorPrimary"
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <Button
-                    android:id="@+id/button"
-                    android:background="@color/colorAccent"
-                    android:textColor="@android:color/white"
-                    android:gravity="center"
-                    android:text="@string/ingredients"
-                    android:textStyle="italic"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Widget.Button"
-                    android:padding="7dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+        android:layout_height="match_parent"
+        android:id="@+id/master_list_fragment"
+        tools:layout="@layout/recipe_fragment"
+        android:name="com.example.android.bakingapp.RecipeDetailFragment"/>
 
 
-                <android.support.v7.widget.CardView
-                    tools:style="@style/CardView"
-                    android:background="@color/colorPrimary"
-                    android:id="@+id/recipe_card_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/ingredients_recycle_view"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
-
-                </android.support.v7.widget.CardView>
-
-            </LinearLayout>
-
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/steps_recycle_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-        </LinearLayout>
-
-
-    </android.support.v4.widget.NestedScrollView>
-
-
-    <RelativeLayout
-        android:layout_alignParentTop="true"
-        android:layout_toEndOf="@id/nscw"
+    <FrameLayout
+        android:id="@+id/container"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"/>
 
-
-        <com.google.android.exoplayer2.ui.SimpleExoPlayerView
-            android:id="@+id/player_view"
-            android:layout_width="match_parent"
-            app:resize_mode="fixed_width"
-            android:layout_height="210dp" />
-
-
-        <android.support.v7.widget.CardView
-            android:id="@+id/cv_recipe_description"
-            android:layout_marginTop="42dp"
-            android:layout_marginEnd="@dimen/margin"
-            android:layout_marginStart="@dimen/margin"
-            android:layout_below="@+id/player_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:text="@string/show"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Light.Widget.PopupMenu.Small"
-                android:id="@+id/recipe_description_media"
-                android:layout_margin="@dimen/margin"
-                android:layout_gravity="center"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:ignore="InvalidId" />
-
-        </android.support.v7.widget.CardView>
-
-
-    </RelativeLayout>
-
-</RelativeLayout>
+</LinearLayout>
