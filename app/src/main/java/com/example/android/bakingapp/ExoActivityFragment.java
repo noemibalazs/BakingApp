@@ -1,24 +1,23 @@
 package com.example.android.bakingapp;
 
-import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NavUtils;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.android.bakingapp.model.Steps;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
@@ -37,9 +36,6 @@ import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
-import java.util.List;
-import java.util.Objects;
-
 public class ExoActivityFragment extends Fragment implements ExoPlayer.EventListener{
 
     private SimpleExoPlayerView mPlayerView;
@@ -48,20 +44,7 @@ public class ExoActivityFragment extends Fragment implements ExoPlayer.EventList
     private PlaybackStateCompat.Builder mStateBuilder;
     private TextView mText;
 
-    private RelativeLayout.LayoutParams mParams;
     private CardView mCard;
-    private CardView mButton;
-    private ImageView mLeft;
-    private ImageView mRight;
-
-    private Steps mSteps;
-    private int position;
-
-    private String mDescription;
-    private String mVideo;
-    private String mThumb;
-
-    private boolean phone;
 
     private static final String TAG = ExoActivity.class.getSimpleName();
 
@@ -71,140 +54,47 @@ public class ExoActivityFragment extends Fragment implements ExoPlayer.EventList
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View root = inflater.inflate(R.layout.exo_fragment, container, false);
+        View root = inflater.inflate(R.layout.activity_exo, container, false);
+
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         Bundle bundle = getArguments();
-        String description = bundle.getString("Description");
 
-        final String thumbnail = bundle.getString("Thumbnail");
-        final String video = bundle.getString("Video");
-        final List<Steps> step = bundle.getParcelableArrayList("List");
-        position = bundle.getInt("Id", 0);
+        if (bundle!=null){
 
-        mPlayerView = root.findViewById(R.id.player_view);
-        mText = root.findViewById(R.id.recipe_description_media);
-        mText.setText(description);
+            String description = bundle.getString("Description");
+            final String thumbnail = bundle.getString("Thumbnail");
+            final String video = bundle.getString("Video");
 
-        mCard = root.findViewById(R.id.cv_recipe_description);
-        mButton = root.findViewById(R.id.cv_button);
+            mPlayerView = root.findViewById(R.id.player_view);
+            mText = root.findViewById(R.id.recipe_description_media);
+            mText.setText(description);
 
-        mLeft = root.findViewById(R.id.left_click_image);
-        mRight = root.findViewById(R.id.right_click_image);
+            mCard = root.findViewById(R.id.cv_recipe_description);
 
-        phone = getActivity().getResources().getBoolean(R.bool.isPhone);
+            initializeMediaSession();
 
-        if (phone){
-            mRight.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (position >= 0 && position < step.size() - 1) {
-                        position++;
-                        if (mExoPlayer != null) releasePlayer();
-                        mSteps = step.get(position);
-                        mRight.setEnabled(true);
-                        mVideo = mSteps.getVideoUrl();
-                        Log.v(TAG, "hhhhhhhhhhhhhhhhhh " + mVideo);
-                        mThumb = mSteps.getThumbnailUrl();
-                        Log.v(TAG, "HHHHHHHHHHHHHHHHHHHH " + mThumb);
-                        mDescription = mSteps.getRecipeDescription();
-                        mText.setText(mDescription);
-                        if (!mThumb.isEmpty()) {
-                            initializePlayer(Uri.parse(mThumb));
-                        } else if (!mVideo.isEmpty()) {
-                            initializePlayer(Uri.parse(mVideo));
-                        }
-
-                    }
-                }
-            });
-
-            mLeft.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (position > 0 && position <= step.size()) {
-                        position--;
-                        if (mExoPlayer != null)
-                            releasePlayer();
-                        mSteps = step.get(position);
-                        mLeft.setEnabled(true);
-                        mVideo = mSteps.getVideoUrl();
-                        Log.v(TAG, "hhhhhhhhhhhhhhhhhh " + mVideo);
-                        mThumb = mSteps.getThumbnailUrl();
-                        Log.v(TAG, "HHHHHHHHHHHHHHHHHHHH " + mThumb);
-                        mDescription = mSteps.getRecipeDescription();
-                        mText.setText(mDescription);
-                        if (!mVideo.isEmpty()) {
-                            initializePlayer(Uri.parse(mVideo));
-                        } else if (!mThumb.isEmpty()) {
-                            initializePlayer(Uri.parse(mThumb));
-                        }
-                    }
-
-                }
-            });
-        }
-
-        else {
-            mButton.setVisibility(View.GONE);
-            mLeft.setVisibility(View.GONE);
-            mRight.setVisibility(View.GONE);
-        }
-
-
-        initializeMediaSession();
-
-        assert thumbnail != null;
-        if (!thumbnail.isEmpty()){
-            initializePlayer(Uri.parse(thumbnail));
-        } else {
-            assert video != null;
-            if(!video.isEmpty()){
+            if (!thumbnail.isEmpty()){
+                initializePlayer(Uri.parse(thumbnail));
+            } else if(!video.isEmpty()){
                 initializePlayer(Uri.parse(video));
             }
+
         }
-
-        resizePlayer(getResources().getConfiguration().orientation);
-
 
         return root;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
 
-    private void resizePlayer(int orientation){
-        if (orientation == Configuration.ORIENTATION_LANDSCAPE){
-            mCard.setVisibility(View.GONE);
-            mButton.setVisibility(View.GONE);
-            mParams = (RelativeLayout.LayoutParams) mPlayerView.getLayoutParams();
-            mParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
-            mParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
-            mPlayerView.setLayoutParams(mParams);
-
-            if (((AppCompatActivity)getActivity()).getSupportActionBar()!=null){
-                ((AppCompatActivity)getActivity()).getSupportActionBar() .hide();
-            }
-            getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                    |View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE) ;
+        int id = item.getItemId();
+        if (id == android.R.id.home){
+            NavUtils.navigateUpFromSameTask(getActivity());
         }
-
-        else if (orientation == Configuration.ORIENTATION_PORTRAIT){
-            mCard.setVisibility(View.VISIBLE);
-            mButton.setVisibility(View.VISIBLE);
-            mParams = (RelativeLayout.LayoutParams) mPlayerView.getLayoutParams();
-            mParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
-            float f = mPlayerView.getResources().getDisplayMetrics().density;
-            mParams.height = (int)(210 * f);
-            mPlayerView.setLayoutParams(mParams);
-
-            if (((AppCompatActivity)getActivity()).getSupportActionBar()!= null){
-                ((AppCompatActivity)getActivity()).getSupportActionBar() .show();
-            }
-
-            getActivity().getWindow().getDecorView().setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-            );
-        }
+        return super.onOptionsItemSelected(item);
     }
-
 
     private void initializeMediaSession(){
 
@@ -246,19 +136,6 @@ public class ExoActivityFragment extends Fragment implements ExoPlayer.EventList
             mExoPlayer.setPlayWhenReady(true);
 
         }
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        releasePlayer();
-        mMediaSession.setActive(false);
-    }
-
-    private void releasePlayer(){
-        mExoPlayer.stop();
-        mExoPlayer.release();
-        mExoPlayer=null;
     }
 
     @Override

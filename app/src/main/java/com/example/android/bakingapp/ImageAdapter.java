@@ -41,7 +41,6 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
         public void onBindViewHolder(@NonNull ImageViewHolder holder, int position) {
             Recipe recipe = mRecipes.get(position);
             String image = recipe.getImageRecipe();
-            final int id = recipe.getIdRecipe();
             final String name = recipe.getNameRecipe();
             final List<Ingredients> ingredients = recipe.getListIngredients();
             final List<Steps> steps = recipe.getListSteps();
@@ -54,14 +53,18 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
             holder.cake.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
                     Bundle bundle = new Bundle();
                     bundle.putParcelableArrayList("In", (ArrayList<? extends Parcelable>) ingredients);
                     bundle.putParcelableArrayList("St", (ArrayList<? extends Parcelable>) steps);
+                    bundle.putString("Name", name);
 
                     RecipeDetailFragment fragment = new RecipeDetailFragment();
                     fragment.setArguments(bundle);
 
                     Intent intent = new Intent(mContext, RecipeDetail.class);
+                    intent.putParcelableArrayListExtra("In", (ArrayList<? extends Parcelable>) ingredients);
+                    intent.putParcelableArrayListExtra("St", (ArrayList<? extends Parcelable>) steps);
                     intent.putExtra("Name", name);
                     mContext.startActivity(intent);
                 }

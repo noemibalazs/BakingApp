@@ -49,6 +49,7 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
         return mIngredients.size();
     }
 
+
     class IngredientsViewHolder extends RecyclerView.ViewHolder{
 
         private TextView mText;
