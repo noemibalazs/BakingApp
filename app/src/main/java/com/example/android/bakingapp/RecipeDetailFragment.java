@@ -24,7 +24,8 @@ public class RecipeDetailFragment extends Fragment {
     private RecyclerView mRecycleIngredients;
     private RecyclerView mRecycleSteps;
     private IngredientsAdapter mIngredientAdapter;
-    private StepsAdapter mStepsAdapter;
+    private StepsFragmentAdapter mStepsAdapter;
+
 
     public RecipeDetailFragment(){}
 
@@ -60,7 +61,7 @@ public class RecipeDetailFragment extends Fragment {
             mRecycleSteps.setLayoutManager(stManager);
             mRecycleSteps.setHasFixedSize(true);
 
-            mStepsAdapter = new StepsAdapter(getContext(), steps);
+            mStepsAdapter = new StepsFragmentAdapter(getContext(), steps);
             mRecycleSteps.setAdapter(mStepsAdapter);
 
         }

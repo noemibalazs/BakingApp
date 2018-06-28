@@ -50,14 +50,6 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.StepsViewHol
         holder.mArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Bundle bundle = new Bundle();
-                bundle.putString("Description", description);
-                bundle.putString("Thumbnail", thumbnail);
-                bundle.putString("Video", video);
-
-                ExoActivityFragment fragment = new ExoActivityFragment();
-                fragment.setArguments(bundle);
-
                 Intent intent = new Intent(mContext, ExoActivity.class);
                 intent.putExtra("Description", description);
                 intent.putExtra("Thumbnail", thumbnail);
@@ -89,8 +81,4 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.StepsViewHol
         }
     }
 
-    public void bindSteps(List<Steps> st){
-        mSteps = st;
-        notifyDataSetChanged();
-    }
 }

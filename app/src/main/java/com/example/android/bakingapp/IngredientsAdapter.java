@@ -61,10 +61,4 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
     }
 
 
-    public void bindIngredients(List<Ingredients> ing){
-        mIngredients = ing;
-        notifyDataSetChanged();
-    }
-
-
 }
