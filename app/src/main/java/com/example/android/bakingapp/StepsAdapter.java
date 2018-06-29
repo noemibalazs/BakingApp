@@ -1,10 +1,7 @@
 package com.example.android.bakingapp;
 
-import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
@@ -25,6 +22,7 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.StepsViewHol
 
     private List<Steps> mSteps;
     private Context mContext;
+
 
     public StepsAdapter(Context context, List<Steps> steps){
         mContext = context;
@@ -57,6 +55,7 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.StepsViewHol
                 intent.putExtra("Id", stepsId);
                 intent.putParcelableArrayListExtra("List", (ArrayList<? extends Parcelable>) mSteps);
                 mContext.startActivity(intent);
+
             }
         });
 

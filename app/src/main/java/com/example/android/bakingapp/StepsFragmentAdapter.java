@@ -1,7 +1,6 @@
 package com.example.android.bakingapp;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -19,6 +18,7 @@ public class StepsFragmentAdapter extends RecyclerView.Adapter<StepsFragmentAdap
 
     private Context mContext;
     private List<Steps> mSteps;
+
 
     public StepsFragmentAdapter(Context context, List<Steps> steps){
         mContext = context;
@@ -52,8 +52,6 @@ public class StepsFragmentAdapter extends RecyclerView.Adapter<StepsFragmentAdap
                 ExoActivityFragment fragment = new ExoActivityFragment();
                 fragment.setArguments(bundle);
 
-                Intent intent = new Intent(mContext, ExoActivityFragment.class);
-                mContext.startActivity(intent);
             }
         });
 

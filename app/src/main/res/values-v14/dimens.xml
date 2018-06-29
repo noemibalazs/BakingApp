@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="margin">8dp</dimen>
-    <integer name="gallery_columns">1</integer>
 
     <dimen name="widget_margin">8dp</dimen>
+
 </resources>

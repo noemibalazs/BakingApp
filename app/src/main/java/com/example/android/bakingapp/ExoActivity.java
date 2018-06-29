@@ -1,6 +1,7 @@
 package com.example.android.bakingapp;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.support.v4.media.session.MediaSessionCompat;
@@ -8,6 +9,7 @@ import android.support.v4.media.session.PlaybackStateCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -59,7 +61,6 @@ public class ExoActivity extends AppCompatActivity implements ExoPlayer.EventLis
     private String mThumb;
 
     private static final String TAG = ExoActivity.class.getSimpleName();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,9 +146,8 @@ public class ExoActivity extends AppCompatActivity implements ExoPlayer.EventLis
         }
 
         resizePlayer(getResources().getConfiguration().orientation);
-
-
     }
+
     private void resizePlayer(int orientation){
         if (orientation == Configuration.ORIENTATION_LANDSCAPE){
             mCard.setVisibility(View.GONE);
