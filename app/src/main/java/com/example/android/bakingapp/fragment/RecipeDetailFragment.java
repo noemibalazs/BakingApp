@@ -39,7 +39,7 @@ public class RecipeDetailFragment extends Fragment {
 
         View root = inflater.inflate(R.layout.recipe_fragment, container, false);
 
-        if (root.findViewById(R.id.container)!=null){
+        if (root.findViewById(R.id.container)!= null){
 
             FragmentManager managerF = getActivity().getSupportFragmentManager();
             ExoActivityFragment fragment = new ExoActivityFragment();

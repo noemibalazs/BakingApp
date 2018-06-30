@@ -8,12 +8,23 @@
     android:baselineAligned="false"
     tools:context=".activity.RecipeDetail">
 
-    <fragment
+
+    <FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="300dp"
-        android:layout_height="match_parent"
-        android:id="@+id/master_list_fragment"
-        tools:layout="@layout/recipe_fragment"
-        android:name="com.example.android.bakingapp.fragment.RecipeDetailFragment"/>
+        android:layout_height="match_parent">
+
+
+        <fragment
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/master_list_fragment"
+            tools:layout="@layout/recipe_fragment"
+            android:name="com.example.android.bakingapp.fragment.RecipeDetailFragment" />
+
+
+    </FrameLayout>
 
 
     <FrameLayout
