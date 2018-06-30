@@ -11,13 +11,14 @@ import com.example.android.bakingapp.model.Recipe;
 import com.example.android.bakingapp.util.RecipeUtil;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RecipeWidgetViewFactory implements RemoteViewsService.RemoteViewsFactory {
 
     private Context mContext;
-    private List<Ingredients> mIngredients;
-    private List<Recipe> recipes;
+    private List<Ingredients> mIngredients = new ArrayList<>();
+    private List<Recipe> recipes = new ArrayList<>();
 
     public RecipeWidgetViewFactory( Context context){
         mContext = context;
@@ -47,26 +48,21 @@ public class RecipeWidgetViewFactory implements RemoteViewsService.RemoteViewsFa
 
         recipes = RecipeUtil.getAllDetail(mContext);
         if (recipes!=null){
+
         Recipe recipe = recipes.get(position);
         String name = recipe.getNameRecipe();
         mIngredients = recipe.getListIngredients();
-        Ingredients ingredients = mIngredients.get(position);
-        String q = ingredients.getQuantity();
-        String m = ingredients.getMeasure();
-        String in = ingredients.getIngredient();
+        String list = listIngredients(mIngredients);
 
         RemoteViews views = new RemoteViews(mContext.getPackageName(), R.layout.listview_ingredients);
         views.setTextViewText(R.id.widget_tv_name, name);
-        views.setTextViewText(R.id.widget_tv_q, q);
-        views.setTextViewText(R.id.widget_tv_m, m);
-        views.setTextViewText(R.id.widget_tv_i, in);
+        views.setTextViewText(R.id.widget_ing_details, list);
 
-        Intent intent = new Intent();
-        views.setOnClickFillInIntent(R.layout.listview_ingredients, intent);
+        Intent fillInIntent = new Intent();
+        views.setOnClickFillInIntent(R.id.widget_ing_details, fillInIntent);
 
-        return  views;
+        return views;
         }
-
         return null;
     }
 
@@ -88,6 +84,20 @@ public class RecipeWidgetViewFactory implements RemoteViewsService.RemoteViewsFa
     @Override
     public boolean hasStableIds() {
         return true;
+    }
+
+
+    public String listIngredients (List<Ingredients> ingredients){
+        StringBuilder builder = new StringBuilder();
+        for (int i=0; i < ingredients.size(); i++){
+            Ingredients ing = ingredients.get(i);
+            String q = ing.getQuantity();
+            String m = ing.getMeasure();
+            String iT = ing.getIngredient();
+            builder.append("\n");
+            builder.append(" ").append(q).append(" ").append(m).append(" ").append(iT);
+        }
+        return  builder.toString();
     }
 
 }
