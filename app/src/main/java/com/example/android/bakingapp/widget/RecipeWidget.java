@@ -8,8 +8,7 @@ import android.content.Intent;
 import android.widget.RemoteViews;
 
 import com.example.android.bakingapp.R;
-import com.example.android.bakingapp.RecipeDetail;
-import com.example.android.bakingapp.widget.RecipeWidgetService;
+import com.example.android.bakingapp.activity.RecipeDetail;
 
 public class RecipeWidget extends AppWidgetProvider {
 

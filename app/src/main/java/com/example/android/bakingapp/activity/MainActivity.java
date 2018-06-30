@@ -1,21 +1,22 @@
-package com.example.android.bakingapp;
+package com.example.android.bakingapp.activity;
 
 import android.app.LoaderManager;
 import android.content.Context;
 import android.content.Loader;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.android.bakingapp.loader.ImageLoader;
+import com.example.android.bakingapp.R;
+import com.example.android.bakingapp.adapter.ImageAdapter;
 import com.example.android.bakingapp.model.Recipe;
 
 import java.util.List;

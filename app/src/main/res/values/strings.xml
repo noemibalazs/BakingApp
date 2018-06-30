@@ -10,5 +10,7 @@
     <string name="sorry_no_steps">Sorry, no steps!</string>
     <string name="add_widget">Add widget</string>
     <string name="appwidget_text">EXAMPLE</string>
+    <string name="title_test_list">Items</string>
+    <string name="title_test_detail">Test Detail</string>
 
 </resources>

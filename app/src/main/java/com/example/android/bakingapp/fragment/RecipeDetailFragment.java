@@ -1,4 +1,4 @@
-package com.example.android.bakingapp;
+package com.example.android.bakingapp.fragment;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -12,6 +12,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.android.bakingapp.R;
+import com.example.android.bakingapp.adapter.IngredientsAdapter;
+import com.example.android.bakingapp.adapter.StepsAdapter;
 import com.example.android.bakingapp.model.Ingredients;
 import com.example.android.bakingapp.model.Steps;
 import com.example.android.bakingapp.widget.WidgetUpdateService;
@@ -26,7 +29,6 @@ public class RecipeDetailFragment extends Fragment {
     private IngredientsAdapter mIngredientAdapter;
     private StepsAdapter mStepsAdapter;
 
-    private ImageView mWidget;
     private String name;
 
     public RecipeDetailFragment(){}
@@ -76,16 +78,9 @@ public class RecipeDetailFragment extends Fragment {
 
         }
 
-        mWidget = root.findViewById(R.id.iv_widget);
-
         return root;
      }
 
-
-    public void click(View view) {
-        Toast.makeText(getActivity(), "Widget has been added", Toast.LENGTH_SHORT).show();
-        WidgetUpdateService.updateWidget(getActivity());
-    }
 }
 
 

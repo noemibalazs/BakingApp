@@ -4,4 +4,8 @@
     <integer name="gallery_columns">1</integer>
     <dimen name="widget_margin">8dp</dimen>
     <dimen name="widget_space">2dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="app_bar_height">200dp</dimen>
+    <dimen name="item_width">200dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
 </resources>

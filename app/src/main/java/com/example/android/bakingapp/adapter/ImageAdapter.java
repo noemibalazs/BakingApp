@@ -1,4 +1,4 @@
-package com.example.android.bakingapp;
+package com.example.android.bakingapp.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.example.android.bakingapp.R;
+import com.example.android.bakingapp.activity.RecipeDetail;
+import com.example.android.bakingapp.fragment.RecipeDetailFragment;
 import com.example.android.bakingapp.model.Ingredients;
 import com.example.android.bakingapp.model.Recipe;
 import com.example.android.bakingapp.model.Steps;
@@ -54,15 +57,10 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
                 @Override
                 public void onClick(View v) {
 
-                    Bundle bundle = new Bundle();
-                    bundle.putParcelableArrayList("In", (ArrayList<? extends Parcelable>) ingredients);
-                    bundle.putParcelableArrayList("St", (ArrayList<? extends Parcelable>) steps);
-                    bundle.putString("Name", name);
-
-                    RecipeDetailFragment fragment = new RecipeDetailFragment();
-                    fragment.setArguments(bundle);
-
                     Intent intent = new Intent(mContext, RecipeDetail.class);
+                    intent.putParcelableArrayListExtra("In", (ArrayList<? extends Parcelable>) ingredients);
+                    intent.putParcelableArrayListExtra("St", (ArrayList<? extends Parcelable>) steps);
+                    intent.putExtra("Name", name);
                     mContext.startActivity(intent);
                 }
             });

@@ -1,4 +1,4 @@
-package com.example.android.bakingapp;
+package com.example.android.bakingapp.loader;
 
 import android.content.AsyncTaskLoader;
 import android.content.Context;

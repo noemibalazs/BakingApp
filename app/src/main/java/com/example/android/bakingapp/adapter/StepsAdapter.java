@@ -1,4 +1,4 @@
-package com.example.android.bakingapp;
+package com.example.android.bakingapp.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +12,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.android.bakingapp.activity.ExoActivity;
+import com.example.android.bakingapp.fragment.ExoActivityFragment;
+import com.example.android.bakingapp.R;
 import com.example.android.bakingapp.model.Steps;
 
 
