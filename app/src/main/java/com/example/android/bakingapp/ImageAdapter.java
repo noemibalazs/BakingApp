@@ -63,9 +63,6 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
                     fragment.setArguments(bundle);
 
                     Intent intent = new Intent(mContext, RecipeDetail.class);
-                    intent.putParcelableArrayListExtra("In", (ArrayList<? extends Parcelable>) ingredients);
-                    intent.putParcelableArrayListExtra("St", (ArrayList<? extends Parcelable>) steps);
-                    intent.putExtra("Name", name);
                     mContext.startActivity(intent);
                 }
             });

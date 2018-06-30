@@ -19,6 +19,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".RecipeDetail"
             android:parentActivityName=".MainActivity">
@@ -26,8 +27,23 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
+
         <activity android:name=".ExoActivity" />
 
+        <receiver android:name=".widget.RecipeWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/recipe_widget_info" />
+        </receiver>
+
+        <service android:name=".widget.RecipeWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS"/>
+
+        <service android:name=".widget.WidgetUpdateService" />
     </application>
 
 </manifest>

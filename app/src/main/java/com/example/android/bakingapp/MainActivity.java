@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Loader;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -43,7 +44,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         mAdapter = new ImageAdapter(this);
         mRecycle.setAdapter(mAdapter);
-
 
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();

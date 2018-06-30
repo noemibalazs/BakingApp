@@ -4,29 +4,30 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.NavUtils;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.android.bakingapp.model.Ingredients;
 import com.example.android.bakingapp.model.Steps;
+import com.example.android.bakingapp.widget.WidgetUpdateService;
 
 import java.util.List;
 
-
 public class RecipeDetailFragment extends Fragment {
 
+    private boolean twoPanel;
     private RecyclerView mRecycleIngredients;
     private RecyclerView mRecycleSteps;
     private IngredientsAdapter mIngredientAdapter;
-    private StepsFragmentAdapter mStepsAdapter;
+    private StepsAdapter mStepsAdapter;
 
+    private ImageView mWidget;
+    private String name;
 
     public RecipeDetailFragment(){}
 
@@ -36,12 +37,20 @@ public class RecipeDetailFragment extends Fragment {
 
         View root = inflater.inflate(R.layout.recipe_fragment, container, false);
 
-        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        if (root.findViewById(R.id.container)!=null){
+
+            FragmentManager managerF = getActivity().getSupportFragmentManager();
+            ExoActivityFragment fragment = new ExoActivityFragment();
+            managerF.beginTransaction().add(R.id.container, fragment).commit();
+            twoPanel = true;
+
+        } else {
+            twoPanel = false;
+        }
 
         Bundle bundle = getArguments();
 
-        if (bundle !=null){
+        if (bundle!=null) {
 
             List<Ingredients> ingredients = bundle.getParcelableArrayList("In");
             List<Steps> steps = bundle.getParcelableArrayList("St");
@@ -62,21 +71,20 @@ public class RecipeDetailFragment extends Fragment {
             mRecycleSteps.setLayoutManager(stManager);
             mRecycleSteps.setHasFixedSize(true);
 
-            mStepsAdapter = new StepsFragmentAdapter(getContext(), steps);
+            mStepsAdapter = new StepsAdapter(getContext(), steps);
             mRecycleSteps.setAdapter(mStepsAdapter);
 
         }
 
+        mWidget = root.findViewById(R.id.iv_widget);
+
         return root;
      }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == android.R.id.home){
-            NavUtils.navigateUpFromSameTask(getActivity());
-        }
-        return super.onOptionsItemSelected(item);
+
+    public void click(View view) {
+        Toast.makeText(getActivity(), "Widget has been added", Toast.LENGTH_SHORT).show();
+        WidgetUpdateService.updateWidget(getActivity());
     }
 }
 
