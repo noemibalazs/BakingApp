@@ -41,6 +41,7 @@ public class RecipeDetail extends AppCompatActivity {
 
         RecipeDetailFragment fragment = new RecipeDetailFragment();
         fragment.setArguments(bundle);
+        getSupportFragmentManager().beginTransaction().replace(R.id.master_list_fragment, fragment).commit();
 
 
     }
