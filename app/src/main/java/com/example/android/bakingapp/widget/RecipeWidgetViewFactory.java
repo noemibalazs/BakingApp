@@ -2,13 +2,18 @@ package com.example.android.bakingapp.widget;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import com.example.android.bakingapp.R;
+import com.example.android.bakingapp.activity.RecipeDetail;
 import com.example.android.bakingapp.model.Ingredients;
 import com.example.android.bakingapp.model.Recipe;
 import com.example.android.bakingapp.util.RecipeUtil;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 
 import java.util.ArrayList;
@@ -18,7 +23,7 @@ public class RecipeWidgetViewFactory implements RemoteViewsService.RemoteViewsFa
 
     private Context mContext;
     private List<Ingredients> mIngredients = new ArrayList<>();
-    private List<Recipe> recipes = new ArrayList<>();
+    private String name;
 
     public RecipeWidgetViewFactory( Context context){
         mContext = context;
@@ -30,6 +35,14 @@ public class RecipeWidgetViewFactory implements RemoteViewsService.RemoteViewsFa
 
     @Override
     public void onDataSetChanged() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(mContext);
+        String json = preferences.getString(RecipeDetail.GSON, "");
+        name = preferences.getString(RecipeDetail.NAME, "");
+        if (!json.equals("")){
+            Gson gson = new Gson();
+            mIngredients = gson.fromJson(json, new TypeToken<ArrayList<Ingredients>>(){}.getType());
+
+        }
 
     }
 
@@ -40,30 +53,24 @@ public class RecipeWidgetViewFactory implements RemoteViewsService.RemoteViewsFa
 
     @Override
     public int getCount() {
+        if (mIngredients == null) return 0;
         return mIngredients.size();
     }
 
     @Override
     public RemoteViews getViewAt(int position) {
 
-        recipes = RecipeUtil.getAllDetail(mContext);
-        if (recipes!=null){
-
-        Recipe recipe = recipes.get(position);
-        String name = recipe.getNameRecipe();
-        mIngredients = recipe.getListIngredients();
-        String list = listIngredients(mIngredients);
+        String whole = listIngredients(mIngredients);
 
         RemoteViews views = new RemoteViews(mContext.getPackageName(), R.layout.listview_ingredients);
         views.setTextViewText(R.id.widget_tv_name, name);
-        views.setTextViewText(R.id.widget_ing_details, list);
+        views.setTextViewText(R.id.widget_ing_details, whole);
 
-        Intent fillInIntent = new Intent();
-        views.setOnClickFillInIntent(R.id.widget_ing_details, fillInIntent);
+        Intent intent = new Intent();
+        views.setOnClickFillInIntent(R.id.widget_ing_details, intent);
 
         return views;
-        }
-        return null;
+
     }
 
     @Override

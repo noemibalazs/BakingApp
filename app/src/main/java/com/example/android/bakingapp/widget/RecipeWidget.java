@@ -3,6 +3,7 @@ package com.example.android.bakingapp.widget;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.widget.RemoteViews;
@@ -12,35 +13,32 @@ import com.example.android.bakingapp.activity.RecipeDetail;
 
 public class RecipeWidget extends AppWidgetProvider {
 
-    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
-                                int appWidgetId) {
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        super.onReceive(context, intent);
 
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.recipe_widget);
-        Intent service = new Intent(context, RecipeWidgetService.class);
-        views.setRemoteAdapter(R.id.widget_lv, service);
-
-        Intent intent = new Intent(context, RecipeDetail.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        views.setPendingIntentTemplate(R.id.widget_lv, pendingIntent);
-        views.setOnClickPendingIntent(R.id.widget_lv, pendingIntent);
-
-        appWidgetManager.updateAppWidget(appWidgetId, views);
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context.getApplicationContext());
+        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context.getApplicationContext(), RecipeWidget.class));
+        onUpdate(context, appWidgetManager, appWidgetIds);
     }
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        for (int appWidgetId : appWidgetIds) {
-            updateAppWidget(context, appWidgetManager, appWidgetId);
+        for (int i=0; i < appWidgetIds.length; i++) {
+
+            Intent service = new Intent(context, RecipeWidgetService.class);
+            service.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetIds[i]);
+
+            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.recipe_widget);
+            views.setRemoteAdapter(R.id.widget_lv, service);
+            appWidgetManager.updateAppWidget(appWidgetIds[i], views);
+            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds[i], R.id.widget_lv);
+
+            Intent intent = new Intent(context, RecipeDetail.class);
+            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+            views.setOnClickPendingIntent(R.id.widget_lv, pendingIntent);
+
         }
-    }
-
-    @Override
-    public void onEnabled(Context context) {
-    }
-
-    @Override
-    public void onDisabled(Context context) {
-
     }
 }
 

@@ -47,7 +47,7 @@ public class ExoActivity extends AppCompatActivity {
         ExoActivityFragment fragment = new ExoActivityFragment();
         fragment.setArguments(bundle);
         FragmentManager manager = getSupportFragmentManager();
-        manager.beginTransaction().replace(R.id.move, fragment).commit();
+        manager.beginTransaction().add(R.id.move, fragment).commit();
 
     }
 
