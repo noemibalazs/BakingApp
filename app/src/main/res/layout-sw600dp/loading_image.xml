@@ -10,7 +10,7 @@
     <ImageView
         android:id="@+id/cake_image"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="@dimen/cake_height"
         android:background="@drawable/cake"
         android:scaleType="centerCrop"
         android:contentDescription="@string/show" />

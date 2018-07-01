@@ -59,12 +59,7 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.StepsViewHol
                 intent.putParcelableArrayListExtra("List", (ArrayList<? extends Parcelable>) mSteps);
                 mContext.startActivity(intent);
 
-                Bundle bundle = new Bundle();
-                bundle.putString("Description", description);
-                bundle.putString("Video", video);
-                bundle.putString("Thumbnail", thumbnail);
-                ExoActivityFragment fragment = new ExoActivityFragment();
-                fragment.setArguments(bundle);
+
 
             }
         });

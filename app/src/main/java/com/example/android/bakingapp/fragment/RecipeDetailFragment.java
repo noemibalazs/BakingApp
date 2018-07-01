@@ -20,6 +20,7 @@ import com.example.android.bakingapp.model.Steps;
 import com.example.android.bakingapp.widget.WidgetUpdateService;
 
 import java.util.List;
+import java.util.Objects;
 
 public class RecipeDetailFragment extends Fragment {
 
@@ -29,8 +30,6 @@ public class RecipeDetailFragment extends Fragment {
     private IngredientsAdapter mIngredientAdapter;
     private StepsAdapter mStepsAdapter;
 
-    private String name;
-
     public RecipeDetailFragment(){}
 
     @Nullable
@@ -38,17 +37,6 @@ public class RecipeDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.recipe_fragment, container, false);
-
-        if (root.findViewById(R.id.container)!= null){
-
-            FragmentManager managerF = getActivity().getSupportFragmentManager();
-            ExoActivityFragment fragment = new ExoActivityFragment();
-            managerF.beginTransaction().add(R.id.container, fragment).commit();
-            twoPanel = true;
-
-        } else {
-            twoPanel = false;
-        }
 
         Bundle bundle = getArguments();
 

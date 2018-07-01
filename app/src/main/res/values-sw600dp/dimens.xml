@@ -3,4 +3,6 @@
     <dimen name="margin">8dp</dimen>
     <integer name="gallery_columns">2</integer>
     <dimen name="top">27dp</dimen>
+    <dimen name="exo_height">430dp</dimen>
+    <dimen name="cake_height">300dp</dimen>
 </resources>
