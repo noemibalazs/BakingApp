@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
 
 import com.example.android.bakingapp.R;
@@ -15,7 +14,6 @@ import com.example.android.bakingapp.fragment.ExoActivityFragment;
 import com.example.android.bakingapp.model.Steps;
 
 import java.util.ArrayList;
-import java.util.EventListener;
 import java.util.List;
 
 public class ExoActivity extends AppCompatActivity {
