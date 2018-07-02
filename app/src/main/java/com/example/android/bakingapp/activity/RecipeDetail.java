@@ -44,6 +44,7 @@ public class RecipeDetail extends AppCompatActivity {
         name = intent.getStringExtra("Name");
 
         if (savedInstanceState == null){
+
             Bundle bundle = new Bundle();
             bundle.putString("Name", name);
             bundle.putParcelableArrayList("In", (ArrayList<? extends Parcelable>) ingredients);
