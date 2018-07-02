@@ -43,16 +43,17 @@ public class RecipeDetail extends AppCompatActivity {
         List<Steps> steps = intent.getParcelableArrayListExtra("St");
         name = intent.getStringExtra("Name");
 
-        Bundle bundle = new Bundle();
-        bundle.putString("Name", name);
-        bundle.putParcelableArrayList("In", (ArrayList<? extends Parcelable>) ingredients);
-        bundle.putParcelableArrayList("St", (ArrayList<? extends Parcelable>) steps);
+        if (savedInstanceState == null){
+            Bundle bundle = new Bundle();
+            bundle.putString("Name", name);
+            bundle.putParcelableArrayList("In", (ArrayList<? extends Parcelable>) ingredients);
+            bundle.putParcelableArrayList("St", (ArrayList<? extends Parcelable>) steps);
 
-        RecipeDetailFragment fragment = new RecipeDetailFragment();
-        fragment.setArguments(bundle);
-        FragmentManager manager = getSupportFragmentManager();
-        manager.beginTransaction().add(R.id.replace, fragment).commit();
-
+            RecipeDetailFragment fragment = new RecipeDetailFragment();
+            fragment.setArguments(bundle);
+            FragmentManager manager = getSupportFragmentManager();
+            manager.beginTransaction().add(R.id.replace, fragment).commit();
+        }
 
         if (findViewById(R.id.container)!=null){
             ExoActivityFragment exoFragment = new ExoActivityFragment();

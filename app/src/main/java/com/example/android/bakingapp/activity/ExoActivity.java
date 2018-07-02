@@ -63,8 +63,6 @@ public class ExoActivity extends AppCompatActivity implements ExoPlayer.EventLis
     private String mVideo;
     private String mThumb;
 
-    private boolean isTablet = true;
-
     private static final String TAG = ExoActivity.class.getSimpleName();
 
     @Override
@@ -81,16 +79,16 @@ public class ExoActivity extends AppCompatActivity implements ExoPlayer.EventLis
         final List <Steps> step = intent.getParcelableArrayListExtra("List");
         position = intent.getIntExtra("Id", 0);
 
-        Bundle bundle = new Bundle();
-        bundle.putString("Description", description);
-        bundle.putString("Video", video);
-        bundle.putString("Thumbnail", thumbnail);
+        if (savedInstanceState == null){
+            Bundle bundle = new Bundle();
+            bundle.putString("Description", description);
+            bundle.putString("Video", video);
+            bundle.putString("Thumbnail", thumbnail);
 
-        if (isTablet){
             ExoActivityFragment fragment = new ExoActivityFragment();
             fragment.setArguments(bundle);
             FragmentManager manager = getSupportFragmentManager();
-            manager.beginTransaction().replace(R.id.move, fragment).commit();
+            manager.beginTransaction().replace(R.id.to_replace, fragment).commit();
         }
 
         mPlayerView = findViewById(R.id.player_view);
