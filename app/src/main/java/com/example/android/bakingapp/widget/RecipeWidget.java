@@ -6,9 +6,12 @@ import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.widget.RemoteViews;
 
 import com.example.android.bakingapp.R;
+import com.example.android.bakingapp.activity.MainActivity;
 import com.example.android.bakingapp.activity.RecipeDetail;
 
 public class RecipeWidget extends AppWidgetProvider {
@@ -33,10 +36,6 @@ public class RecipeWidget extends AppWidgetProvider {
             views.setRemoteAdapter(R.id.widget_lv, service);
             appWidgetManager.updateAppWidget(appWidgetIds[i], views);
             appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds[i], R.id.widget_lv);
-
-            Intent intent = new Intent(context, RecipeDetail.class);
-            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
-            views.setOnClickPendingIntent(R.id.widget_lv, pendingIntent);
 
         }
     }

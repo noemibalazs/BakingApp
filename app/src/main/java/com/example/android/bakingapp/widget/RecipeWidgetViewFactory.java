@@ -3,7 +3,9 @@ package com.example.android.bakingapp.widget;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v7.widget.ButtonBarLayout;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
@@ -27,6 +29,8 @@ public class RecipeWidgetViewFactory implements RemoteViewsService.RemoteViewsFa
 
     public RecipeWidgetViewFactory( Context context){
         mContext = context;
+
+
     }
 
     @Override
@@ -53,8 +57,7 @@ public class RecipeWidgetViewFactory implements RemoteViewsService.RemoteViewsFa
 
     @Override
     public int getCount() {
-        if (mIngredients == null) return 0;
-        return mIngredients.size();
+        return 1;
     }
 
     @Override
@@ -66,8 +69,6 @@ public class RecipeWidgetViewFactory implements RemoteViewsService.RemoteViewsFa
         views.setTextViewText(R.id.widget_tv_name, name);
         views.setTextViewText(R.id.widget_ing_details, whole);
 
-        Intent intent = new Intent();
-        views.setOnClickFillInIntent(R.id.widget_ing_details, intent);
 
         return views;
 

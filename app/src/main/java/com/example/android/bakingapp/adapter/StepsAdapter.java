@@ -59,8 +59,6 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.StepsViewHol
                 intent.putParcelableArrayListExtra("List", (ArrayList<? extends Parcelable>) mSteps);
                 mContext.startActivity(intent);
 
-
-
             }
         });
 
