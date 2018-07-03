@@ -1,5 +1,7 @@
 package com.example.android.bakingapp.fragment;
 
+import android.content.Intent;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,20 +12,25 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.android.bakingapp.R;
+import com.example.android.bakingapp.activity.ExoActivity;
 import com.example.android.bakingapp.adapter.IngredientsAdapter;
 import com.example.android.bakingapp.adapter.StepsAdapter;
 import com.example.android.bakingapp.model.Ingredients;
 import com.example.android.bakingapp.model.Steps;
 
+
+import java.util.ArrayList;
 import java.util.List;
 
-public class RecipeDetailFragment extends Fragment {
+public class RecipeDetailFragment extends Fragment implements StepsAdapter.AdapterInterface {
 
-    private boolean twoPanel;
     private RecyclerView mRecycleIngredients;
     private RecyclerView mRecycleSteps;
     private IngredientsAdapter mIngredientAdapter;
     private StepsAdapter mStepsAdapter;
+
+    private List<Steps> mSteps;
+    private boolean isPhone ;
 
     public RecipeDetailFragment(){}
 
@@ -38,7 +45,7 @@ public class RecipeDetailFragment extends Fragment {
         if (bundle!=null) {
 
             List<Ingredients> ingredients = bundle.getParcelableArrayList("In");
-            List<Steps> steps = bundle.getParcelableArrayList("St");
+            mSteps = bundle.getParcelableArrayList("St");
             String name = bundle.getString("Name");
 
             getActivity().setTitle(name);
@@ -56,7 +63,7 @@ public class RecipeDetailFragment extends Fragment {
             mRecycleSteps.setLayoutManager(stManager);
             mRecycleSteps.setHasFixedSize(true);
 
-            mStepsAdapter = new StepsAdapter(getContext(), steps);
+            mStepsAdapter = new StepsAdapter(getContext(), mSteps, this);
             mRecycleSteps.setAdapter(mStepsAdapter);
 
         }
@@ -64,6 +71,40 @@ public class RecipeDetailFragment extends Fragment {
         return root;
      }
 
+    @Override
+    public void onHandler(int position, List<Steps> steps) {
+        Steps st = steps.get(position);
+        String description = st.getRecipeDescription();
+        String thumbnail = st.getThumbnailUrl();
+        String video = st.getVideoUrl();
+        int stepsId = st.getIdSteps();
+
+        isPhone = getActivity().getResources().getBoolean(R.bool.isPhone);
+
+
+        if (isPhone){
+            Intent intent = new Intent(getContext(), ExoActivity.class);
+            intent.putExtra("Description", description);
+            intent.putExtra("Thumbnail", thumbnail);
+            intent.putExtra("Video", video);
+            intent.putExtra("Id",stepsId );
+            intent.putParcelableArrayListExtra("List", (ArrayList<? extends Parcelable>) steps);
+            startActivity(intent);
+        }
+
+        else {
+            Bundle bundle = new Bundle();
+            bundle.putString("Description", description);
+            bundle.putString("Video", video);
+            bundle.putString("Thumbnail", thumbnail);
+
+            ExoFragment fragment = new ExoFragment();
+            fragment.setArguments(bundle);
+            getActivity().getSupportFragmentManager().beginTransaction().commit();
+            // how to make the tranaction replace(R.id.   , fragment)....?????
+        }
+
+    }
 }
 
 

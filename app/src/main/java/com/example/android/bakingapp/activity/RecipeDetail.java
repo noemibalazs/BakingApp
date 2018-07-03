@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.android.bakingapp.R;
-import com.example.android.bakingapp.fragment.ExoActivityFragment;
+import com.example.android.bakingapp.fragment.ExoFragment;
 import com.example.android.bakingapp.fragment.RecipeDetailFragment;
 import com.example.android.bakingapp.model.Ingredients;
 import com.example.android.bakingapp.model.Steps;
@@ -57,10 +57,12 @@ public class RecipeDetail extends AppCompatActivity {
         }
 
         if (findViewById(R.id.container)!=null){
-            ExoActivityFragment exoFragment = new ExoActivityFragment();
+
+            ExoFragment exoFragment = new ExoFragment();
             FragmentManager managerFragment = getSupportFragmentManager();
             managerFragment.beginTransaction().add(R.id.container, exoFragment).commit();
             twoPanel = true;
+
         } else {
             twoPanel = false;
         }

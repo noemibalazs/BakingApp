@@ -1,19 +1,14 @@
 package com.example.android.bakingapp.widget;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v7.widget.ButtonBarLayout;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import com.example.android.bakingapp.R;
 import com.example.android.bakingapp.activity.RecipeDetail;
 import com.example.android.bakingapp.model.Ingredients;
-import com.example.android.bakingapp.model.Recipe;
-import com.example.android.bakingapp.util.RecipeUtil;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -65,7 +60,7 @@ public class RecipeWidgetViewFactory implements RemoteViewsService.RemoteViewsFa
 
         String whole = listIngredients(mIngredients);
 
-        RemoteViews views = new RemoteViews(mContext.getPackageName(), R.layout.listview_ingredients);
+        RemoteViews views = new RemoteViews(mContext.getPackageName(), R.layout.widget_ingredients);
         views.setTextViewText(R.id.widget_tv_name, name);
         views.setTextViewText(R.id.widget_ing_details, whole);
 

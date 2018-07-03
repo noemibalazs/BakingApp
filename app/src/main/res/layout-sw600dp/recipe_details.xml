@@ -8,10 +8,12 @@
     android:baselineAligned="false"
     tools:context=".activity.RecipeDetail">
 
+
     <FrameLayout
         android:id="@+id/replace"
         android:layout_width="300dp"
         android:layout_height="match_parent"/>
+
 
     <FrameLayout
         android:id="@+id/container"

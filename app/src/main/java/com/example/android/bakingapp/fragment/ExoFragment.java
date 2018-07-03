@@ -1,27 +1,21 @@
 package com.example.android.bakingapp.fragment;
 
-import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.NavUtils;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.android.bakingapp.R;
-import com.example.android.bakingapp.model.Steps;
+import com.example.android.bakingapp.activity.ExoActivity;
+import com.example.android.bakingapp.activity.MainActivity;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
@@ -40,21 +34,21 @@ import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
-import java.util.List;
+import java.util.Objects;
 
-public class ExoActivityFragment extends Fragment implements ExoPlayer.EventListener{
+public class ExoFragment extends Fragment implements ExoPlayer.EventListener {
 
     private SimpleExoPlayerView mPlayerView;
     private SimpleExoPlayer mExoPlayer;
     private static MediaSessionCompat mMediaSession;
     private PlaybackStateCompat.Builder mStateBuilder;
-    private TextView mText;
 
+    private TextView mText;
     private CardView mCard;
 
-    private static final String TAG = ExoActivityFragment.class.getSimpleName();
+    private static final String TAG = ExoFragment.class.getSimpleName();
 
-    public ExoActivityFragment(){}
+    public ExoFragment(){}
 
     @Nullable
     @Override
@@ -68,42 +62,28 @@ public class ExoActivityFragment extends Fragment implements ExoPlayer.EventList
 
         Bundle bundle = getArguments();
 
-        if ( bundle != null) {
+        if (bundle != null){
+            String description = bundle.getString("Description");
+            final String thumbnail = bundle.getString("Thumbnail");
+            final String video = bundle.getString("Video");
 
-        String description = bundle.getString("Description");
-        final String thumbnail = bundle.getString("Thumbnail");
-        final String video = bundle.getString("Video");
+            mText.setText(description);
 
-        mText.setText(description);
+            initializeMediaSession();
 
-        initializeMediaSession();
-
-        assert thumbnail != null;
-        if (!thumbnail.isEmpty()) {
-            initializePlayer(Uri.parse(thumbnail));
-        } else {
-            assert video != null;
-            if (!video.isEmpty()) {
-                initializePlayer(Uri.parse(video));
+            assert thumbnail != null;
+            if (!thumbnail.isEmpty()) {
+                initializePlayer(Uri.parse(thumbnail));
+            } else {
+                assert video != null;
+                if (!video.isEmpty()) {
+                    initializePlayer(Uri.parse(video));
+                }
             }
+
         }
 
-    }
         return root;
-    }
-
-
-    public void releasePlayer(){
-        mExoPlayer.stop();
-        mExoPlayer.release();
-        mExoPlayer = null;
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        releasePlayer();
-        mMediaSession.setActive(false);
     }
 
     private void initializeMediaSession(){
@@ -121,7 +101,7 @@ public class ExoActivityFragment extends Fragment implements ExoPlayer.EventList
                                 PlaybackStateCompat.ACTION_PLAY_PAUSE);
 
         mMediaSession.setPlaybackState(mStateBuilder.build());
-        mMediaSession.setCallback(new ExoActivityFragment.MySessionCallback());
+        mMediaSession.setCallback(new ExoFragment.MySessionCallback());
         mMediaSession.setActive(true);
 
     }
@@ -141,11 +121,25 @@ public class ExoActivityFragment extends Fragment implements ExoPlayer.EventList
 
             String userAgent = Util.getUserAgent(getActivity(), "BakingApp");
             MediaSource source = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(
-                   (getActivity()), userAgent), new DefaultExtractorsFactory(), null, null);
+                    (getActivity()), userAgent), new DefaultExtractorsFactory(), null, null);
             mExoPlayer.prepare(source);
             mExoPlayer.setPlayWhenReady(true);
 
         }
+    }
+
+
+    public void releasePlayer(){
+        mExoPlayer.stop();
+        mExoPlayer.release();
+        mExoPlayer = null;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        releasePlayer();
+        mMediaSession.setActive(false);
     }
 
     @Override
@@ -203,5 +197,7 @@ public class ExoActivityFragment extends Fragment implements ExoPlayer.EventList
             mExoPlayer.seekTo(0);
         }
     }
+
+
 
 }
