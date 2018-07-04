@@ -25,11 +25,12 @@ import java.util.List;
 public class RecipeDetail extends AppCompatActivity {
 
     private ImageView mWidget;
-    private boolean twoPanel;
     private List<Ingredients> ingredients;
     private String name;
     public static final String GSON = "json";
     public static final String NAME = "name";
+
+    private Boolean isTablet = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,10 +62,8 @@ public class RecipeDetail extends AppCompatActivity {
             ExoFragment exoFragment = new ExoFragment();
             FragmentManager managerFragment = getSupportFragmentManager();
             managerFragment.beginTransaction().add(R.id.container, exoFragment).commit();
-            twoPanel = true;
+            isTablet = true;
 
-        } else {
-            twoPanel = false;
         }
     }
 
