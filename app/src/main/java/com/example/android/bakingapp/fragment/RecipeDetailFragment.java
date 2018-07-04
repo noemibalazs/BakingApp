@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 
 import com.example.android.bakingapp.R;
 import com.example.android.bakingapp.activity.ExoActivity;
+import com.example.android.bakingapp.activity.RecipeDetail;
+import com.example.android.bakingapp.activity.TransitActivity;
 import com.example.android.bakingapp.adapter.IngredientsAdapter;
 import com.example.android.bakingapp.adapter.StepsAdapter;
 import com.example.android.bakingapp.inter.MyInterface;
@@ -31,7 +33,7 @@ public class RecipeDetailFragment extends Fragment implements MyInterface{
     private StepsAdapter mStepsAdapter;
 
     private List<Steps> mSteps;
-    private Boolean isPhone;
+    private Boolean isTablet;
 
     public RecipeDetailFragment(){}
 
@@ -43,7 +45,7 @@ public class RecipeDetailFragment extends Fragment implements MyInterface{
 
         Bundle bundle = getArguments();
 
-        isPhone = getActivity().getResources().getBoolean(R.bool.isPhone);
+        isTablet = ((RecipeDetail)getActivity()).tabletMode();
 
         if (bundle!=null) {
 
@@ -81,7 +83,8 @@ public class RecipeDetailFragment extends Fragment implements MyInterface{
         String thumbnail = step.getThumbnailUrl();
         String video = step.getVideoUrl();
         int positionSteps = step.getIdSteps();
-        if (isPhone){
+
+        if (!isTablet){
             Intent intent = new Intent(getContext(), ExoActivity.class);
             intent.putParcelableArrayListExtra("List", (ArrayList<? extends Parcelable>) mSteps);
             intent.putExtra("Description", description);
@@ -91,13 +94,11 @@ public class RecipeDetailFragment extends Fragment implements MyInterface{
             startActivity(intent);
 
         } else {
-            Bundle bundle = new Bundle();
-            bundle.putString("Description", description);
-            bundle.putString("Video", video);
-            bundle.putString("Thumbnail", thumbnail);
-
-            ExoFragment fragment = new ExoFragment();
-            fragment.setArguments(bundle);
+            Intent service = new Intent(getContext(), TransitActivity.class);
+            service.putExtra("Description", description);
+            service.putExtra("Video", video);
+            service.putExtra("Thumbnail", thumbnail);
+            startActivity(service);
         }
 
     }

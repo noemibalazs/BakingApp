@@ -44,12 +44,12 @@ public class RecipeDetail extends AppCompatActivity {
         List<Steps> steps = intent.getParcelableArrayListExtra("St");
         name = intent.getStringExtra("Name");
 
-        if (savedInstanceState == null){
+        Bundle bundle = new Bundle();
+        bundle.putString("Name", name);
+        bundle.putParcelableArrayList("In", (ArrayList<? extends Parcelable>) ingredients);
+        bundle.putParcelableArrayList("St", (ArrayList<? extends Parcelable>) steps);
 
-            Bundle bundle = new Bundle();
-            bundle.putString("Name", name);
-            bundle.putParcelableArrayList("In", (ArrayList<? extends Parcelable>) ingredients);
-            bundle.putParcelableArrayList("St", (ArrayList<? extends Parcelable>) steps);
+        if (savedInstanceState == null){
 
             RecipeDetailFragment fragment = new RecipeDetailFragment();
             fragment.setArguments(bundle);
@@ -65,6 +65,10 @@ public class RecipeDetail extends AppCompatActivity {
             isTablet = true;
 
         }
+    }
+
+    public boolean tabletMode(){
+        return isTablet;
     }
 
 
