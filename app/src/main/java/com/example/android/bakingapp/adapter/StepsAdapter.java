@@ -16,6 +16,7 @@ import com.example.android.bakingapp.R;
 import com.example.android.bakingapp.activity.ExoActivity;
 import com.example.android.bakingapp.activity.RecipeDetail;
 import com.example.android.bakingapp.fragment.ExoFragment;
+import com.example.android.bakingapp.inter.MyInterface;
 import com.example.android.bakingapp.model.Steps;
 
 
@@ -27,9 +28,12 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.StepsViewHol
     private List<Steps> mSteps;
     private Context mContext;
 
-    public StepsAdapter(Context context, List<Steps> steps){
+    private MyInterface mInterface;
+
+    public StepsAdapter(Context context, List<Steps> steps, MyInterface inte){
         mContext = context;
         mSteps = steps;
+        mInterface = inte;
     }
 
     @NonNull
@@ -40,33 +44,14 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.StepsViewHol
     }
 
     @Override
-    public void onBindViewHolder(@NonNull StepsViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull StepsViewHolder holder, final int position) {
         final Steps steps = mSteps.get(position);
         String shortDescription = steps.getShortDescription();
-        final String video = steps.getVideoUrl();
-        final String thumbnail = steps.getThumbnailUrl();
-        final String description = steps.getRecipeDescription();
-        final int stepsId = steps.getIdSteps();
         holder.mDescription.setText(shortDescription);
         holder.mArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, ExoActivity.class);
-                intent.putExtra("Description", description);
-                intent.putExtra("Video", video);
-                intent.putExtra("Thumbnail", thumbnail);
-                intent.putExtra("Id", stepsId);
-                intent.putParcelableArrayListExtra("List", (ArrayList<? extends Parcelable>) mSteps);
-                mContext.startActivity(intent);
-
-                Bundle bundle = new Bundle();
-                bundle.putString("Description", description);
-                bundle.putString("Video", video);
-                bundle.putString("Thumbnail", thumbnail);
-
-                ExoFragment fragment= new ExoFragment();
-                fragment.setArguments(bundle);
-
+                mInterface.onHandler(position);
             }
         });
 

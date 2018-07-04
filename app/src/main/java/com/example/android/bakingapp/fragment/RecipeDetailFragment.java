@@ -1,5 +1,7 @@
 package com.example.android.bakingapp.fragment;
 
+import android.content.Intent;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,15 +12,18 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.android.bakingapp.R;
+import com.example.android.bakingapp.activity.ExoActivity;
 import com.example.android.bakingapp.adapter.IngredientsAdapter;
 import com.example.android.bakingapp.adapter.StepsAdapter;
+import com.example.android.bakingapp.inter.MyInterface;
 import com.example.android.bakingapp.model.Ingredients;
 import com.example.android.bakingapp.model.Steps;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class RecipeDetailFragment extends Fragment {
+public class RecipeDetailFragment extends Fragment implements MyInterface{
 
     private RecyclerView mRecycleIngredients;
     private RecyclerView mRecycleSteps;
@@ -61,13 +66,41 @@ public class RecipeDetailFragment extends Fragment {
             mRecycleSteps.setLayoutManager(stManager);
             mRecycleSteps.setHasFixedSize(true);
 
-            mStepsAdapter = new StepsAdapter(getContext(), mSteps);
+            mStepsAdapter = new StepsAdapter(getContext(), mSteps, this);
             mRecycleSteps.setAdapter(mStepsAdapter);
 
         }
 
         return root;
      }
+
+    @Override
+    public void onHandler(int position) {
+        Steps step = mSteps.get(position);
+        String description = step.getRecipeDescription();
+        String thumbnail = step.getThumbnailUrl();
+        String video = step.getVideoUrl();
+        int positionSteps = step.getIdSteps();
+        if (isPhone){
+            Intent intent = new Intent(getContext(), ExoActivity.class);
+            intent.putParcelableArrayListExtra("List", (ArrayList<? extends Parcelable>) mSteps);
+            intent.putExtra("Description", description);
+            intent.putExtra("Video", video);
+            intent.putExtra("Thumbnail", thumbnail);
+            intent.putExtra("Id", positionSteps);
+            startActivity(intent);
+
+        } else {
+            Bundle bundle = new Bundle();
+            bundle.putString("Description", description);
+            bundle.putString("Video", video);
+            bundle.putString("Thumbnail", thumbnail);
+
+            ExoFragment fragment = new ExoFragment();
+            fragment.setArguments(bundle);
+        }
+
+    }
 }
 
 
