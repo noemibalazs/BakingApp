@@ -56,9 +56,9 @@ public class ExoFragment extends Fragment implements ExoPlayer.EventListener {
 
         View root = inflater.inflate(R.layout.exo_fragment, container, false);
 
-        mPlayerView = root.findViewById(R.id.player_view);
-        mText = root.findViewById(R.id.recipe_description_media);
-        mCard = root.findViewById(R.id.cv_recipe_description);
+        mPlayerView = root.findViewById(R.id.p_view);
+        mText = root.findViewById(R.id.recipe_media);
+        mCard = root.findViewById(R.id.cv_description);
 
         Bundle bundle = getArguments();
 

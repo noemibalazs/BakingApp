@@ -9,25 +9,25 @@
 
 
     <com.google.android.exoplayer2.ui.SimpleExoPlayerView
-        android:id="@+id/player_view"
+        android:id="@+id/p_view"
         android:layout_width="match_parent"
         app:resize_mode="fixed_width"
         android:layout_height="@dimen/exo_height" />
 
 
     <android.support.v7.widget.CardView
-        android:id="@+id/cv_recipe_description"
+        android:id="@+id/cv_description"
         android:layout_marginTop="@dimen/top"
         android:layout_marginEnd="@dimen/margin"
         android:layout_marginStart="@dimen/margin"
-        android:layout_below="@+id/player_view"
+        android:layout_below="@+id/p_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <TextView
             android:text="@string/show"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Light.Widget.PopupMenu.Small"
-            android:id="@+id/recipe_description_media"
+            android:id="@+id/recipe_media"
             android:layout_margin="@dimen/margin"
             android:layout_gravity="center"
             android:layout_width="match_parent"
