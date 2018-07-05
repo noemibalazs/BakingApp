@@ -1,14 +1,21 @@
 package com.example.android.bakingapp.activity;
 
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.UriMatcher;
 import android.content.res.Configuration;
+import android.graphics.BitmapFactory;
+import android.media.tv.TvView;
 import android.net.Uri;
+import android.os.Parcelable;
+import android.support.annotation.Nullable;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import android.support.v7.widget.CardView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +26,7 @@ import android.widget.TextView;
 
 import com.example.android.bakingapp.R;
 import com.example.android.bakingapp.model.Steps;
+import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
@@ -37,6 +45,7 @@ import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -55,11 +64,24 @@ public class ExoActivity extends AppCompatActivity implements ExoPlayer.EventLis
     private ImageView mRight;
 
     private Steps mSteps;
+    private List<Steps> step;
     private int position;
+    private long positionPlayer = 0;
+    private int windowIndex = 0;
+    private boolean play = true;
 
     private String mDescription;
     private String mVideo;
     private String mThumb;
+
+    public static final String ID = "id";
+    public static final String LONG = "position";
+    public static final String WINDOW = "window";
+    public static final String VIDEO = "video";
+    public static final String THUMBNAIL = "thumbnail";
+    public static final String DESCRIPTION = "description";
+    public static final String LIST = "list";
+
 
     private static final String TAG = ExoActivity.class.getSimpleName();
 
@@ -70,16 +92,23 @@ public class ExoActivity extends AppCompatActivity implements ExoPlayer.EventLis
 
         this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        if (savedInstanceState != null) {
+            positionPlayer = savedInstanceState.getLong(LONG);
+            windowIndex = savedInstanceState.getInt(WINDOW);
+            position = savedInstanceState.getInt(ID);
+
+        }
+
         final Intent intent = getIntent();
-        String description = intent.getStringExtra("Description");
-        final String thumbnail = intent.getStringExtra("Thumbnail");
-        final String video = intent.getStringExtra("Video");
-        final List <Steps> step = intent.getParcelableArrayListExtra("List");
+        mDescription = intent.getStringExtra("Description");
+        mThumb = intent.getStringExtra("Thumbnail");
+        mVideo = intent.getStringExtra("Video");
+        step = intent.getParcelableArrayListExtra("List");
         position = intent.getIntExtra("Id", 0);
 
         mPlayerView = findViewById(R.id.player_view);
         mText = findViewById(R.id.recipe_description_media);
-        mText.setText(description);
+        mText.setText(mDescription);
 
         mCard = findViewById(R.id.cv_recipe_description);
         mButton = findViewById(R.id.cv_button);
@@ -136,17 +165,21 @@ public class ExoActivity extends AppCompatActivity implements ExoPlayer.EventLis
             }
         });
 
-
         initializeMediaSession();
+        mPlayerView.setDefaultArtwork(BitmapFactory.decodeResource(getResources(), R.drawable.question_mark));
 
-        if (!thumbnail.isEmpty()){
-            initializePlayer(Uri.parse(thumbnail));
-        } else if(!video.isEmpty()){
-            initializePlayer(Uri.parse(video));
+        if (!mThumb.isEmpty()){
+            initializePlayer(Uri.parse(mThumb));
+        } else if(!mVideo.isEmpty()){
+            initializePlayer(Uri.parse(mVideo));
+        }  else if (TextUtils.isEmpty(mVideo) && TextUtils.isEmpty(mThumb)){
+            initializePlayer(null);
+            mPlayerView.setDefaultArtwork(BitmapFactory.decodeResource(getResources(), R.drawable.question_mark));
         }
 
         resizePlayer(getResources().getConfiguration().orientation);
     }
+
 
     private void resizePlayer(int orientation){
         if (orientation == Configuration.ORIENTATION_LANDSCAPE){
@@ -212,7 +245,6 @@ public class ExoActivity extends AppCompatActivity implements ExoPlayer.EventLis
             LoadControl control = new DefaultLoadControl();
             mExoPlayer = ExoPlayerFactory.newSimpleInstance(this, selector, control);
             mPlayerView.setPlayer(mExoPlayer);
-            mPlayerView.requestFocus();
 
             mExoPlayer.addListener(this);
 
@@ -220,24 +252,56 @@ public class ExoActivity extends AppCompatActivity implements ExoPlayer.EventLis
             MediaSource source = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(
                     this, userAgent), new DefaultExtractorsFactory(), null, null);
             mExoPlayer.prepare(source);
-            mExoPlayer.setPlayWhenReady(true);
+            mExoPlayer.setPlayWhenReady(play);
+            mExoPlayer.seekTo(windowIndex, positionPlayer);
 
         }
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        releasePlayer();
-        mMediaSession.setActive(false);
+    protected void onResume() {
+        super.onResume();
+        if (Util.SDK_INT <= 23){
+            if (!mThumb.isEmpty()){
+                initializePlayer(Uri.parse(mThumb));
+            } else if (!mVideo.isEmpty()){
+                initializePlayer(Uri.parse(mVideo));
+            } else if (TextUtils.isEmpty(mVideo) && TextUtils.isEmpty(mThumb)){
+                initializePlayer(null);
+                mPlayerView.setDefaultArtwork(BitmapFactory.decodeResource(getResources(), R.drawable.question_mark));
+            }
+        }
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (Util.SDK_INT > 23){
+            releasePlayer();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (Util.SDK_INT <= 23){
+        releasePlayer();
+        }
+    }
 
     private void releasePlayer(){
-        mExoPlayer.stop();
-        mExoPlayer.release();
-        mExoPlayer=null;
+        if (mExoPlayer != null){
+            positionPlayer = mExoPlayer.getCurrentPosition();
+            windowIndex = mExoPlayer.getCurrentWindowIndex();
+            play = mExoPlayer.getPlayWhenReady();
+            mExoPlayer.release();
+            mExoPlayer = null;
+        }
+        if (mMediaSession != null){
+            mMediaSession.setActive(false);
+        }
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -247,6 +311,17 @@ public class ExoActivity extends AppCompatActivity implements ExoPlayer.EventLis
         }
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (mExoPlayer != null){
+        outState.putLong(LONG, mExoPlayer.getCurrentPosition());
+        outState.putInt(WINDOW, mExoPlayer.getCurrentWindowIndex());
+        }
+        outState.putInt(ID, position);
+    }
+
 
     @Override
     public void onTimelineChanged(Timeline timeline, Object manifest) {

@@ -1,5 +1,7 @@
 package com.example.android.bakingapp.fragment;
 
+import android.graphics.BitmapFactory;
+import android.graphics.BitmapRegionDecoder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.support.v7.widget.CardView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +19,9 @@ import android.widget.TextView;
 import com.example.android.bakingapp.R;
 import com.example.android.bakingapp.activity.ExoActivity;
 import com.example.android.bakingapp.activity.MainActivity;
+import com.example.android.bakingapp.inter.MyInterface;
+import com.example.android.bakingapp.model.Steps;
+import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
@@ -34,6 +40,7 @@ import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
+import java.util.List;
 import java.util.Objects;
 
 public class ExoFragment extends Fragment implements ExoPlayer.EventListener {
@@ -43,8 +50,18 @@ public class ExoFragment extends Fragment implements ExoPlayer.EventListener {
     private static MediaSessionCompat mMediaSession;
     private PlaybackStateCompat.Builder mStateBuilder;
 
+    private String thumbnail;
+    private String video;
+    private String description;
+
     private TextView mText;
     private CardView mCard;
+    private long positionPlayer;
+
+    public static final String VIDEO = "video";
+    public static final String THUMBNAIL = "thumbnail";
+    public static final String DESCRIPTION = "description";
+    public static final String LONG = "position";
 
     private static final String TAG = ExoFragment.class.getSimpleName();
 
@@ -60,29 +77,28 @@ public class ExoFragment extends Fragment implements ExoPlayer.EventListener {
         mText = root.findViewById(R.id.recipe_media);
         mCard = root.findViewById(R.id.cv_description);
 
+        mPlayerView.setDefaultArtwork(BitmapFactory.decodeResource(getResources(), R.drawable.question_mark));
+
         Bundle bundle = getArguments();
 
         if (bundle != null){
-            String description = bundle.getString("Description");
-            final String thumbnail = bundle.getString("Thumbnail");
-            final String video = bundle.getString("Video");
+           description = bundle.getString("Description");
+           thumbnail = bundle.getString("Thumbnail");
+           video = bundle.getString("Video");
 
-            mText.setText(description);
+           mText.setText(description);
 
-            initializeMediaSession();
+           initializeMediaSession();
 
-            assert thumbnail != null;
             if (!thumbnail.isEmpty()) {
                 initializePlayer(Uri.parse(thumbnail));
-            } else {
-                assert video != null;
-                if (!video.isEmpty()) {
+            } else if (!video.isEmpty()) {
                     initializePlayer(Uri.parse(video));
-                }
+            } else if (TextUtils.isEmpty(video) && TextUtils.isEmpty(thumbnail)){
+                initializePlayer(null);
+                mPlayerView.setDefaultArtwork(BitmapFactory.decodeResource(getResources(), R.drawable.question_mark));
             }
-
         }
-
         return root;
     }
 
@@ -115,7 +131,6 @@ public class ExoFragment extends Fragment implements ExoPlayer.EventListener {
             LoadControl control = new DefaultLoadControl();
             mExoPlayer = ExoPlayerFactory.newSimpleInstance(getActivity(), selector, control);
             mPlayerView.setPlayer(mExoPlayer);
-            mPlayerView.requestFocus();
 
             mExoPlayer.addListener(this);
 
@@ -124,15 +139,43 @@ public class ExoFragment extends Fragment implements ExoPlayer.EventListener {
                     (getActivity()), userAgent), new DefaultExtractorsFactory(), null, null);
             mExoPlayer.prepare(source);
             mExoPlayer.setPlayWhenReady(true);
+            if (positionPlayer != C.TIME_UNSET) mExoPlayer.seekTo(positionPlayer);
 
         }
     }
 
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        if (savedInstanceState!=null){
+            description = savedInstanceState.getString(DESCRIPTION);
+            video = savedInstanceState.getString(VIDEO);
+            thumbnail = savedInstanceState.getString(THUMBNAIL);
+            positionPlayer = savedInstanceState.getLong(LONG);
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(DESCRIPTION, description);
+        outState.putString(VIDEO, video);
+        outState.putString(THUMBNAIL, thumbnail);
+        outState.putLong(LONG, positionPlayer);
+    }
 
     public void releasePlayer(){
-        mExoPlayer.stop();
-        mExoPlayer.release();
+        if (mExoPlayer!=null){
+            positionPlayer = mExoPlayer.getCurrentPosition();
+            mExoPlayer.release();
+        }
         mExoPlayer = null;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        releasePlayer();
     }
 
     @Override
@@ -141,6 +184,7 @@ public class ExoFragment extends Fragment implements ExoPlayer.EventListener {
         releasePlayer();
         mMediaSession.setActive(false);
     }
+
 
     @Override
     public void onTimelineChanged(Timeline timeline, Object manifest) {

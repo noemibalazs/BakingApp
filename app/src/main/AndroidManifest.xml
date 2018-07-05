@@ -42,7 +42,6 @@
             android:name=".widget.RecipeWidgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
 
-        <activity android:name=".activity.TransitActivity"></activity>
     </application>
 
 </manifest>

@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.example.android.bakingapp.R;
 import com.example.android.bakingapp.fragment.ExoFragment;
 import com.example.android.bakingapp.fragment.RecipeDetailFragment;
+import com.example.android.bakingapp.inter.MyInterface;
 import com.example.android.bakingapp.model.Ingredients;
 import com.example.android.bakingapp.model.Steps;
 import com.example.android.bakingapp.widget.RecipeWidget;
@@ -26,6 +27,7 @@ public class RecipeDetail extends AppCompatActivity {
 
     private ImageView mWidget;
     private List<Ingredients> ingredients;
+    private List<Steps> steps;
     private String name;
     public static final String GSON = "json";
     public static final String NAME = "name";
@@ -41,7 +43,7 @@ public class RecipeDetail extends AppCompatActivity {
 
         Intent intent = getIntent();
         ingredients = intent.getParcelableArrayListExtra("In");
-        List<Steps> steps = intent.getParcelableArrayListExtra("St");
+        steps = intent.getParcelableArrayListExtra("St");
         name = intent.getStringExtra("Name");
 
         Bundle bundle = new Bundle();
@@ -49,28 +51,32 @@ public class RecipeDetail extends AppCompatActivity {
         bundle.putParcelableArrayList("In", (ArrayList<? extends Parcelable>) ingredients);
         bundle.putParcelableArrayList("St", (ArrayList<? extends Parcelable>) steps);
 
-        if (savedInstanceState == null){
+
+        if (savedInstanceState == null) {
 
             RecipeDetailFragment fragment = new RecipeDetailFragment();
             fragment.setArguments(bundle);
             FragmentManager manager = getSupportFragmentManager();
             manager.beginTransaction().add(R.id.replace, fragment).commit();
+
+            if (findViewById(R.id.container) != null) {
+
+                ExoFragment exoFragment = new ExoFragment();
+                FragmentManager managerFragment = getSupportFragmentManager();
+                managerFragment.beginTransaction().add(R.id.container, exoFragment).commit();
+                isTablet = true;
+
+            } else {
+                isTablet = false;
+            }
+
         }
 
-        if (findViewById(R.id.container)!=null){
-
-            ExoFragment exoFragment = new ExoFragment();
-            FragmentManager managerFragment = getSupportFragmentManager();
-            managerFragment.beginTransaction().add(R.id.container, exoFragment).commit();
-            isTablet = true;
-
-        }
     }
 
     public boolean tabletMode(){
-        return isTablet;
+        return  isTablet;
     }
-
 
     public void click(View view) {
         Toast.makeText(this, "Widget has been added", Toast.LENGTH_SHORT).show();
@@ -94,4 +100,5 @@ public class RecipeDetail extends AppCompatActivity {
         editor.apply();
 
     }
+
 }
