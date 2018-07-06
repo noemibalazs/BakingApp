@@ -56,7 +56,7 @@ public class ExoFragment extends Fragment implements ExoPlayer.EventListener {
 
     private TextView mText;
     private CardView mCard;
-    private long positionPlayer;
+    private long positionPlayer = 0;
 
     public static final String VIDEO = "video";
     public static final String THUMBNAIL = "thumbnail";
@@ -168,23 +168,28 @@ public class ExoFragment extends Fragment implements ExoPlayer.EventListener {
         if (mExoPlayer!=null){
             positionPlayer = mExoPlayer.getCurrentPosition();
             mExoPlayer.release();
+            mExoPlayer = null;
         }
-        mExoPlayer = null;
+       if (mMediaSession != null){
+            mMediaSession.setActive(false);
+       }
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        releasePlayer();
+        if (Util.SDK_INT <= 23){
+            releasePlayer();
+        }
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        releasePlayer();
-        mMediaSession.setActive(false);
+    public void onStop() {
+        super.onStop();
+        if (Util.SDK_INT > 23){
+            releasePlayer();
+        }
     }
-
 
     @Override
     public void onTimelineChanged(Timeline timeline, Object manifest) {

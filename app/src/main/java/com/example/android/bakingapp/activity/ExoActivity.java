@@ -68,6 +68,7 @@ public class ExoActivity extends AppCompatActivity implements ExoPlayer.EventLis
     private int position;
     private long positionPlayer = 0;
     private int windowIndex = 0;
+    private int index;
     private boolean play = true;
 
     private String mDescription;
@@ -77,11 +78,6 @@ public class ExoActivity extends AppCompatActivity implements ExoPlayer.EventLis
     public static final String ID = "id";
     public static final String LONG = "position";
     public static final String WINDOW = "window";
-    public static final String VIDEO = "video";
-    public static final String THUMBNAIL = "thumbnail";
-    public static final String DESCRIPTION = "description";
-    public static final String LIST = "list";
-
 
     private static final String TAG = ExoActivity.class.getSimpleName();
 
@@ -95,7 +91,7 @@ public class ExoActivity extends AppCompatActivity implements ExoPlayer.EventLis
         if (savedInstanceState != null) {
             positionPlayer = savedInstanceState.getLong(LONG);
             windowIndex = savedInstanceState.getInt(WINDOW);
-            position = savedInstanceState.getInt(ID);
+            index = savedInstanceState.getInt(ID);
 
         }
 
@@ -253,39 +249,44 @@ public class ExoActivity extends AppCompatActivity implements ExoPlayer.EventLis
                     this, userAgent), new DefaultExtractorsFactory(), null, null);
             mExoPlayer.prepare(source);
             mExoPlayer.setPlayWhenReady(play);
-            mExoPlayer.seekTo(windowIndex, positionPlayer);
+            if (positionPlayer != C.TIME_UNSET) mExoPlayer.seekTo(windowIndex, positionPlayer);
 
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (Util.SDK_INT > 23){
+            if ( !TextUtils.isEmpty(mThumb) || !TextUtils.isEmpty(mVideo)){
+            }
         }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (Util.SDK_INT <= 23){
-            if (!mThumb.isEmpty()){
-                initializePlayer(Uri.parse(mThumb));
-            } else if (!mVideo.isEmpty()){
-                initializePlayer(Uri.parse(mVideo));
-            } else if (TextUtils.isEmpty(mVideo) && TextUtils.isEmpty(mThumb)){
-                initializePlayer(null);
-                mPlayerView.setDefaultArtwork(BitmapFactory.decodeResource(getResources(), R.drawable.question_mark));
+        if (Util.SDK_INT <= 23 || mExoPlayer == null){
+            if (!TextUtils.isEmpty(mThumb) || !TextUtils.isEmpty(mVideo)){
             }
-        }
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        if (Util.SDK_INT > 23){
-            releasePlayer();
         }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        index = position;
         if (Util.SDK_INT <= 23){
         releasePlayer();
+        }
+    }
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (Util.SDK_INT > 23){
+            releasePlayer();
         }
     }
 
@@ -318,8 +319,9 @@ public class ExoActivity extends AppCompatActivity implements ExoPlayer.EventLis
         if (mExoPlayer != null){
         outState.putLong(LONG, mExoPlayer.getCurrentPosition());
         outState.putInt(WINDOW, mExoPlayer.getCurrentWindowIndex());
+        outState.putInt(ID, index);
         }
-        outState.putInt(ID, position);
+
     }
 
 
