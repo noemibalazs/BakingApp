@@ -92,7 +92,6 @@ public class ExoActivity extends AppCompatActivity implements ExoPlayer.EventLis
             positionPlayer = savedInstanceState.getLong(LONG);
             windowIndex = savedInstanceState.getInt(WINDOW);
             index = savedInstanceState.getInt(ID);
-
         }
 
         final Intent intent = getIntent();

@@ -140,7 +140,7 @@ public class RecipeDetailFragment extends Fragment implements MyInterface{
             ExoFragment fragment = new ExoFragment();
             fragment.setArguments(bundle);
             FragmentManager manager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
-            manager.beginTransaction().add(R.id.container, fragment).commit();
+            manager.beginTransaction().replace(R.id.container, fragment).commit();
         }
     }
 }
