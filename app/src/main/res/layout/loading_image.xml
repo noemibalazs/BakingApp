@@ -1,17 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_marginBottom="@dimen/margin"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="@dimen/cake_height">
 
-    <ImageView
-        android:id="@+id/cake_image"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/cake_height"
-        android:background="@drawable/cake"
-        android:scaleType="centerCrop"
-        android:contentDescription="@string/show" />
 
-</LinearLayout>
+        <ImageView
+            android:id="@+id/cake_image"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/cake_height"
+            android:background="@drawable/cake"
+            android:scaleType="centerCrop"
+            android:contentDescription="@string/show" />
+
+        <TextView
+            android:text="@string/show"
+            android:textStyle="italic"
+            android:textColor="@color/colorPrimary"
+            android:padding="@dimen/margin"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
+            android:id="@+id/cake_name"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+</RelativeLayout>

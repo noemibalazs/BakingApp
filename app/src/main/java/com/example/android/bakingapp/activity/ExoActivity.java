@@ -176,6 +176,7 @@ public class ExoActivity extends AppCompatActivity implements ExoPlayer.EventLis
     }
 
 
+
     private void resizePlayer(int orientation){
         if (orientation == Configuration.ORIENTATION_LANDSCAPE){
             mCard.setVisibility(View.GONE);
@@ -266,7 +267,7 @@ public class ExoActivity extends AppCompatActivity implements ExoPlayer.EventLis
     protected void onResume() {
         super.onResume();
         if (Util.SDK_INT <= 23 || mExoPlayer == null){
-            if (!TextUtils.isEmpty(mThumb) || !TextUtils.isEmpty(mVideo)){
+            if ( !TextUtils.isEmpty(mThumb) || !TextUtils.isEmpty(mVideo)){
             }
         }
     }
@@ -320,7 +321,6 @@ public class ExoActivity extends AppCompatActivity implements ExoPlayer.EventLis
         outState.putInt(WINDOW, mExoPlayer.getCurrentWindowIndex());
         outState.putInt(ID, index);
         }
-
     }
 
 

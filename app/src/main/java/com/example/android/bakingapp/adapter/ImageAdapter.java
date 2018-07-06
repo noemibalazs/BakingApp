@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.android.bakingapp.R;
 import com.example.android.bakingapp.activity.RecipeDetail;
@@ -53,6 +54,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
                     .placeholder(R.drawable.cake)
                     .into(holder.cake);
 
+            holder.name.setText(name);
             holder.cake.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -77,10 +79,12 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
 class ImageViewHolder extends RecyclerView.ViewHolder {
 
     private ImageView cake;
+    private TextView name;
 
     private ImageViewHolder(View itemView) {
         super(itemView);
         cake = itemView.findViewById(R.id.cake_image);
+        name = itemView.findViewById(R.id.cake_name);
     }
 
 }

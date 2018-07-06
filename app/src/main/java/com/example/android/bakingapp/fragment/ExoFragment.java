@@ -55,6 +55,7 @@ public class ExoFragment extends Fragment implements ExoPlayer.EventListener {
     private TextView mText;
     private CardView mCard;
     private long positionPlayer = 0;
+    private boolean play = true;
 
     public static final String VIDEO = "video";
     public static final String THUMBNAIL = "thumbnail";
@@ -143,7 +144,7 @@ public class ExoFragment extends Fragment implements ExoPlayer.EventListener {
             MediaSource source = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(
                     (getActivity()), userAgent), new DefaultExtractorsFactory(), null, null);
             mExoPlayer.prepare(source);
-            mExoPlayer.setPlayWhenReady(true);
+            mExoPlayer.setPlayWhenReady(play);
             if (positionPlayer != C.TIME_UNSET) mExoPlayer.seekTo(positionPlayer);
 
         }
@@ -197,6 +198,7 @@ public class ExoFragment extends Fragment implements ExoPlayer.EventListener {
     public void releasePlayer(){
         if (mExoPlayer!=null){
             positionPlayer = mExoPlayer.getCurrentPosition();
+            play = mExoPlayer.getPlayWhenReady();
             mExoPlayer.release();
             mExoPlayer = null;
         }
