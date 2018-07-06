@@ -1,7 +1,7 @@
 package com.example.android.bakingapp.fragment;
 
+import android.content.res.Configuration;
 import android.graphics.BitmapFactory;
-import android.graphics.BitmapRegionDecoder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,13 +14,11 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.android.bakingapp.R;
-import com.example.android.bakingapp.activity.ExoActivity;
-import com.example.android.bakingapp.activity.MainActivity;
-import com.example.android.bakingapp.inter.MyInterface;
-import com.example.android.bakingapp.model.Steps;
+import com.example.android.bakingapp.activity.RecipeDetail;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
@@ -40,8 +38,6 @@ import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
-import java.util.List;
-import java.util.Objects;
 
 public class ExoFragment extends Fragment implements ExoPlayer.EventListener {
 
@@ -54,6 +50,8 @@ public class ExoFragment extends Fragment implements ExoPlayer.EventListener {
     private String video;
     private String description;
 
+    private RelativeLayout.LayoutParams mParams;
+
     private TextView mText;
     private CardView mCard;
     private long positionPlayer = 0;
@@ -62,6 +60,8 @@ public class ExoFragment extends Fragment implements ExoPlayer.EventListener {
     public static final String THUMBNAIL = "thumbnail";
     public static final String DESCRIPTION = "description";
     public static final String LONG = "position";
+
+    private Boolean isTablet;
 
     private static final String TAG = ExoFragment.class.getSimpleName();
 
@@ -79,6 +79,8 @@ public class ExoFragment extends Fragment implements ExoPlayer.EventListener {
 
         mPlayerView.setDefaultArtwork(BitmapFactory.decodeResource(getResources(), R.drawable.question_mark));
 
+        isTablet = ((RecipeDetail)getActivity()).tabletMode();
+
         Bundle bundle = getArguments();
 
         if (bundle != null){
@@ -89,6 +91,9 @@ public class ExoFragment extends Fragment implements ExoPlayer.EventListener {
            mText.setText(description);
 
            initializeMediaSession();
+
+           if (isTablet){
+                 resizePlayer(getResources().getConfiguration().orientation);}
 
             if (!thumbnail.isEmpty()) {
                 initializePlayer(Uri.parse(thumbnail));
@@ -141,6 +146,31 @@ public class ExoFragment extends Fragment implements ExoPlayer.EventListener {
             mExoPlayer.setPlayWhenReady(true);
             if (positionPlayer != C.TIME_UNSET) mExoPlayer.seekTo(positionPlayer);
 
+        }
+    }
+
+    private void resizePlayer(int orientation){
+        if (orientation == Configuration.ORIENTATION_PORTRAIT){
+            mCard.setVisibility(View.VISIBLE);
+            mParams = (RelativeLayout.LayoutParams) mPlayerView.getLayoutParams();
+            mParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
+            float f = mPlayerView.getResources().getDisplayMetrics().density;
+            mParams.height = (int)(430 * f);
+            mPlayerView.setLayoutParams(mParams);
+
+            getActivity().getWindow().getDecorView().setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+
+        } else if (orientation == Configuration.ORIENTATION_LANDSCAPE){
+            mCard.setVisibility(View.VISIBLE);
+            mParams = (RelativeLayout.LayoutParams) mPlayerView.getLayoutParams();
+            mParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
+            float f = mPlayerView.getResources().getDisplayMetrics().density;
+            mParams.height = (int)(430 * f);
+            mPlayerView.setLayoutParams(mParams);
+
+            getActivity().getWindow().getDecorView().setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         }
     }
 
