@@ -192,7 +192,7 @@ public class ExoFragment extends Fragment implements ExoPlayer.EventListener {
         outState.putString(DESCRIPTION, description);
         outState.putString(VIDEO, video);
         outState.putString(THUMBNAIL, thumbnail);
-        outState.putLong(LONG, positionPlayer);
+        outState.putLong(LONG, mExoPlayer.getCurrentPosition());
     }
 
     public void releasePlayer(){
