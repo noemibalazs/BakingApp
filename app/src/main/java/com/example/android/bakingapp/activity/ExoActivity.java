@@ -78,6 +78,10 @@ public class ExoActivity extends AppCompatActivity implements ExoPlayer.EventLis
     public static final String ID = "id";
     public static final String LONG = "position";
     public static final String WINDOW = "window";
+    public static final String DESCRIPTION = "description";
+    public static final String VIDEO = "video";
+    public static final String THUMBNAIL = "thumbnail";
+    public static final String LIST = "list";
 
     private static final String TAG = ExoActivity.class.getSimpleName();
 
@@ -87,12 +91,6 @@ public class ExoActivity extends AppCompatActivity implements ExoPlayer.EventLis
         setContentView(R.layout.activity_exo);
 
         this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        if (savedInstanceState != null) {
-            positionPlayer = savedInstanceState.getLong(LONG);
-            windowIndex = savedInstanceState.getInt(WINDOW);
-            index = savedInstanceState.getInt(ID);
-        }
 
         final Intent intent = getIntent();
         mDescription = intent.getStringExtra("Description");
@@ -110,6 +108,12 @@ public class ExoActivity extends AppCompatActivity implements ExoPlayer.EventLis
 
         mLeft = findViewById(R.id.left_click_image);
         mRight = findViewById(R.id.right_click_image);
+
+        if (savedInstanceState!=null){
+            index = savedInstanceState.getInt(ID);
+            positionPlayer = savedInstanceState.getLong(LONG);
+            windowIndex = savedInstanceState.getInt(WINDOW);
+        }
 
         mRight.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -319,8 +323,9 @@ public class ExoActivity extends AppCompatActivity implements ExoPlayer.EventLis
         if (mExoPlayer != null){
         outState.putLong(LONG, mExoPlayer.getCurrentPosition());
         outState.putInt(WINDOW, mExoPlayer.getCurrentWindowIndex());
-        outState.putInt(ID, index);
         }
+
+        outState.putInt(ID, index);
     }
 
 
