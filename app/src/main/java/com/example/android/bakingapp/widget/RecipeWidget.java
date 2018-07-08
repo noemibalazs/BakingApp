@@ -1,18 +1,13 @@
 package com.example.android.bakingapp.widget;
 
-import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.widget.RemoteViews;
 
 import com.example.android.bakingapp.R;
-import com.example.android.bakingapp.activity.MainActivity;
-import com.example.android.bakingapp.activity.RecipeDetail;
 
 public class RecipeWidget extends AppWidgetProvider {
 

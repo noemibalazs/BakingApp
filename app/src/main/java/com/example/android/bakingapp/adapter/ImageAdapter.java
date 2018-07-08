@@ -2,7 +2,6 @@ package com.example.android.bakingapp.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -13,8 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.android.bakingapp.R;
-import com.example.android.bakingapp.activity.RecipeDetail;
-import com.example.android.bakingapp.fragment.RecipeDetailFragment;
+import com.example.android.bakingapp.activity.RecipeDetail;;
 import com.example.android.bakingapp.model.Ingredients;
 import com.example.android.bakingapp.model.Recipe;
 import com.example.android.bakingapp.model.Steps;

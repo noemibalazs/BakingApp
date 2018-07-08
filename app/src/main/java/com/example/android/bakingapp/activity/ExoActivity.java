@@ -1,14 +1,9 @@
 package com.example.android.bakingapp.activity;
 
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.UriMatcher;
 import android.content.res.Configuration;
 import android.graphics.BitmapFactory;
-import android.media.tv.TvView;
 import android.net.Uri;
-import android.os.Parcelable;
-import android.support.annotation.Nullable;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -45,7 +40,6 @@ import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
-import java.util.ArrayList;
 import java.util.List;
 
 

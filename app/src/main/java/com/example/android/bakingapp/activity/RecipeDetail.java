@@ -14,7 +14,6 @@ import android.widget.Toast;
 import com.example.android.bakingapp.R;
 import com.example.android.bakingapp.fragment.ExoFragment;
 import com.example.android.bakingapp.fragment.RecipeDetailFragment;
-import com.example.android.bakingapp.inter.MyInterface;
 import com.example.android.bakingapp.model.Ingredients;
 import com.example.android.bakingapp.model.Steps;
 import com.example.android.bakingapp.widget.RecipeWidget;
