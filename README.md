@@ -15,3 +15,6 @@ Libraries Used:
 * Exoplayer
 * Picasso
 * Support design libraries
+
+Screenshot:
+![2_baking app](https://user-images.githubusercontent.com/33603567/47095803-984c3c00-d236-11e8-948e-3ca2a8b3234d.jpg)
