@@ -1,6 +1,7 @@
 # BakingApp
 
 This is stage 3 of Android Developer Nanodegree. 
+
 Learnings:
 
 1. Using ExoPlayer API for playing videos and audios
